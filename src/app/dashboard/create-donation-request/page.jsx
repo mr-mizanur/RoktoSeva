@@ -12,13 +12,13 @@ export default function CreateDonationRequest() {
 
   const [loading, setLoading] = useState(false);
   
-  // 🍞 কাস্টম টোস্ট স্টেট (মেসেজ কন্ট্রোল করবে)
+
   const [toast, setToast] = useState({ show: false, type: "", text: "" });
   
   const [upazilas, setUpazilas] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState("");
 
-  // ১. ডিস্ট্রিক্ট ফিল্টার এবং উপজেলা ম্যাপিং
+
   const handleDistrictChange = (e) => {
     const districtId = e.target.value;
     setSelectedDistrict(districtId);
@@ -35,7 +35,7 @@ export default function CreateDonationRequest() {
     setUpazilas(filtered);
   };
 
-  // 🚀 ২. ফর্ম সাবমিশন
+
   const handleSubmitRequest = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -55,12 +55,13 @@ export default function CreateDonationRequest() {
       patientName: formData.get("patient_name"),
       bloodGroup: formData.get("blood_group"),
       hospital: formData.get("hospital"),
-  district: districtName,
+      district: districtName,
       upazila: formData.get("upazila"),
       contactNumber: formData.get("contact_number"),
       dateNeeded: formData.get("date_needed"),
       donationTime: formData.get("donation_time"),
       details: formData.get("details"),
+  requesterEmail: user.email, // 👈 এটি যোগ না করলে ডেটা আসবে না
   status: "pending"
     };
 
@@ -70,7 +71,7 @@ export default function CreateDonationRequest() {
         headers: { 
           "Content-Type": "application/json",
         },
-        credentials: "include",
+        credentials: "include", 
         body: JSON.stringify(payload),
       });
 
@@ -82,7 +83,7 @@ export default function CreateDonationRequest() {
         e.target.reset();
         setSelectedDistrict("");
         setUpazilas([]);
-
+        
         // টোস্ট দেখানোর পর ৩ সেকেন্ড ব্রেক নিয়ে ড্যাশবোর্ডে পাঠাবে
         setTimeout(() => {
           setToast({ show: false, type: "", text: "" });
@@ -167,8 +168,8 @@ export default function CreateDonationRequest() {
             </div>
 
             <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest pt-2">— Recipient & Case Details</h3>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               
               <div className="form-control">
                 <label className="label-text text-xs uppercase font-bold tracking-wider text-slate-400 mb-2">Recipient Name</label>
@@ -178,11 +179,11 @@ export default function CreateDonationRequest() {
               <div className="form-control">
                 <label className="label-text text-xs uppercase font-bold tracking-wider text-slate-400 mb-2">Required Blood Group</label>
                 <select name="blood_group" required className="select select-bordered w-full bg-[#0c101f] border-white/10 rounded-xl text-white focus:border-red-500/50 transition-all duration-200">
-                  <option value="">Select Group</option>
+              <option value="">Select Group</option>
                   {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map(bg => (
                     <option key={bg} value={bg}>{bg}</option>
                   ))}
-                </select>
+            </select>
               </div>
 
               {/* Recipient District */}
@@ -194,11 +195,11 @@ export default function CreateDonationRequest() {
                   onChange={handleDistrictChange} 
                   className="select select-bordered w-full bg-[#0c101f] border-white/10 rounded-xl text-white focus:border-red-500/50 transition-all duration-200"
                 >
-                  <option value="">Select District</option>
+              <option value="">Select District</option>
                   {allDistricts.map(d => (
                     <option key={d.id} value={d.id}>{d.name}</option>
                   ))}
-                </select>
+            </select>
               </div>
 
               {/* Recipient Upazila */}
@@ -216,7 +217,7 @@ export default function CreateDonationRequest() {
                   {upazilas.map(u => (
                     <option key={u.id} value={u.name}>{u.name}</option>
                   ))}
-                </select>
+            </select>
               </div>
 
               <div className="form-control">
@@ -227,7 +228,7 @@ export default function CreateDonationRequest() {
               <div className="form-control">
                 <label className="label-text text-xs uppercase font-bold tracking-wider text-slate-400 mb-2">Contact Number</label>
                 <input type="text" name="contact_number" required placeholder="Emergency phone digits" className="input input-bordered w-full bg-white/[0.02] border-white/10 rounded-xl text-white focus:border-red-500/50 focus:outline-none transition-all duration-200" />
-              </div>
+          </div>
 
               <div className="form-control">
                 <label className="label-text text-xs uppercase font-bold tracking-wider text-slate-400 mb-2">Donation Date</label>
@@ -254,10 +255,10 @@ export default function CreateDonationRequest() {
                     Deploying Core Request Grid...
                   </div>
                 ) : "Deploy Request"}
-            </button>
+          </button>
             </div>
 
-          </form>
+        </form>
         )}
       </div>
     </div>

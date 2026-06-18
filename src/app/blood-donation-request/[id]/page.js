@@ -9,7 +9,7 @@ export default function RequestDetailsPage() {
   const { id } = useParams();
   const router = useRouter();
   
-  // 👤 Better Auth লাইভ সেশন ফেচ
+
   const { data: session, isPending: isAuthPending } = authClient.useSession();
   const user = session?.user;
   
@@ -17,13 +17,13 @@ export default function RequestDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
 
-  // রিকোয়েস্টের ডেটা লোড করা
+
   useEffect(() => {
     if (!id) return;
 
     const fetchRequestDetails = async () => {
       try {
-        // ১. সাম্প্রতিক রিকোয়েস্ট চেক
+       
         const res = await fetch('http://localhost:5000/api/donor/recent-requests');
         const data = await res.json();
         
@@ -36,7 +36,7 @@ export default function RequestDetailsPage() {
           }
         }
 
-        // ২. ব্যাকআপ পেন্ডিং এপিআই চেক
+       
         const pendingRes = await fetch('http://localhost:5000/api/posts/all-requests/pending');
         const pendingData = await pendingRes.json();
         if (pendingData.success) {
@@ -55,7 +55,7 @@ export default function RequestDetailsPage() {
     fetchRequestDetails();
   }, [id]);
 
-  // ⚡ মডাল কনফার্মেশন সাবমিট হ্যান্ডলার
+  
   const handleConfirmDonation = async (e) => {
     e.preventDefault();
     if (!user) {
@@ -96,7 +96,7 @@ export default function RequestDetailsPage() {
     }
   };
 
-  // ⏳ Better Auth সেশন লোড হওয়া পর্যন্ত ওয়েট করার সেফগার্ড
+ 
   if (loading || isAuthPending) {
     return (
       <div className="min-h-screen bg-[#070a13] flex items-center justify-center">
@@ -123,7 +123,7 @@ export default function RequestDetailsPage() {
           ← Back to Grid
         </button>
 
-        {/* Card Header */}
+      
         <div className="backdrop-blur-xl bg-[#0c101f]/60 border border-white/5 p-6 sm:p-8 rounded-3xl shadow-2xl relative">
           <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_15px_#ef4444]" />
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -140,7 +140,7 @@ export default function RequestDetailsPage() {
           </div>
         </div>
 
-        {/* Parameters Grid */}
+
         <div className="backdrop-blur-xl bg-[#0c101f]/80 border border-white/5 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6">
           <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest border-b border-white/5 pb-2">— Operational Parameters</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -179,7 +179,7 @@ export default function RequestDetailsPage() {
         </div>
       </div>
 
-      {/* 🛠️ DAISYUI DIALOG MODAL MATRIX */}
+     
       <dialog id="donation_confirm_modal" className="modal modal-bottom sm:modal-middle backdrop-blur-md">
         <div className="modal-box bg-[#0c101f]/95 border border-red-500/20 rounded-3xl text-white shadow-2xl p-6 sm:p-8 relative">
           <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_15px_#ef4444]" />
