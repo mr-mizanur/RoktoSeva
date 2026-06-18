@@ -142,9 +142,9 @@ const Navbar = () => {
 
       {isMobileMenuOpen && (
         <>
-          <div className="fixed inset-0 top-[65px] bg-black/60 backdrop-blur-sm z-40 md:hidden" onClick={() => setIsMobileMenuOpen(false)} />
+          <div className="fixed inset-0 top-[66px] bg-black/60 backdrop-blur-sm z-40 md:hidden" onClick={() => setIsMobileMenuOpen(false)} />
           
-          <div className="absolute top-[65px] left-0 w-full bg-[#070a13]/95 border-b border-white/5 backdrop-blur-2xl p-5 z-50 md:hidden flex flex-col gap-4 animate-in slide-in-from-top duration-300">
+          <div className="absolute top-[66px] left-0 w-full bg-[#070a13]/95 border-b border-white/5 backdrop-blur-2xl p-5 z-50 md:hidden flex flex-col gap-4 animate-in slide-in-from-top duration-300">
             <Link 
               href="/" 
               onClick={() => setIsMobileMenuOpen(false)}
