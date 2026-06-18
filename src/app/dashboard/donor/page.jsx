@@ -17,7 +17,7 @@ export default function DonorDashboard() {
   useEffect(() => {
     if (!isPending && !user) { router.push("/login"); return; }
     
-    // নির্দিষ্ট ইউজারের ইমেইল দিয়ে সর্বশেষ ৩টি রিকোয়েস্ট ফেচ করা হচ্ছে
+    
     if (!isPending && user?.email) {
       fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/donor/recent-requests?email=${encodeURIComponent(user.email)}`, { credentials: "include" })
         .then(r => r.json())
