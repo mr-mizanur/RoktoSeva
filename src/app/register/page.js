@@ -51,7 +51,7 @@ const RegisterPage = () => {
     }
 
     try {
-     
+      // 📸 Upload Profile Image to ImgBB
       const imgBbKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY; 
       if (!imgBbKey) throw new Error("ImgBB API Key is missing!");
 
