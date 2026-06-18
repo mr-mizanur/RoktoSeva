@@ -1,10 +1,11 @@
 import Hero from "@/components/Home/Hero";
-import Image from "next/image";
+import PendingRequests from "@/components/PendingRequests";
 
 export default function Home() {
   return (
-    <div >
-    <Hero />
+    <div className="min-h-screen bg-[#070a13] text-white">
+      <Hero />
+      <PendingRequests />
     </div>
   );
 }
