@@ -18,8 +18,8 @@ export async function POST() {
       ],
       mode: 'payment',
       // এনভায়রনমেন্ট ভেরিয়েবল থেকে URL নিন
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/funding/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/funding`,
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/funding/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/funding`,
     });
 
     return Response.redirect(session.url, 303);
