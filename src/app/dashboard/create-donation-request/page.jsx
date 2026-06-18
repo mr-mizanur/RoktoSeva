@@ -66,7 +66,7 @@ export default function CreateDonationRequest() {
     };
 
     try {
-      const res = await fetch('http://localhost:5000/api/posts/blood-request', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/blood-request`, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",

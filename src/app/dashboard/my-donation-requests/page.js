@@ -8,7 +8,7 @@ export default function MyRequests() {
 
   useEffect(() => {
     if (session?.user?.email) {
-      fetch(`http://localhost:5000/api/donor/my-requests?email=${session.user.email}`)
+      fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/donor/my-requests?email=${session.user.email}`)
         .then(res => res.json())
         .then(data => setRequests(data.data));
     }

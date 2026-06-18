@@ -24,7 +24,7 @@ export default function RequestDetailsPage() {
     const fetchRequestDetails = async () => {
       try {
        
-        const res = await fetch('http://localhost:5000/api/donor/recent-requests');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/donor/recent-requests`);
         const data = await res.json();
         
         if (data.success) {
@@ -37,7 +37,7 @@ export default function RequestDetailsPage() {
         }
 
        
-        const pendingRes = await fetch('http://localhost:5000/api/posts/all-requests/pending');
+        const pendingRes = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/all-requests/pending`);
         const pendingData = await pendingRes.json();
         if (pendingData.success) {
           const matchedPending = pendingData.data.find(item => String(item._id) === String(id));
@@ -65,7 +65,7 @@ export default function RequestDetailsPage() {
     
     setUpdating(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/posts/blood-request/${id}/status`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/blood-request/${id}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

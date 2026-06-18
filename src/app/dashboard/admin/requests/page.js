@@ -6,14 +6,14 @@ export default function AdminAllRequests() {
   const [requests, setRequests] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/admin/all-requests')
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/all-requests`)
       .then(res => res.json())
       .then(data => setRequests(data.data));
   }, []);
 
   const handleDelete = async (id) => {
     if (confirm("Are you sure you want to delete this request?")) {
-      await fetch(`http://localhost:5000/api/admin/request/${id}`, { method: 'DELETE' });
+      await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/request/${id}`, { method: 'DELETE' });
       setRequests(requests.filter(r => r._id !== id));
     }
   };

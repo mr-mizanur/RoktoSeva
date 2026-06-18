@@ -12,7 +12,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (!isPending && (!user || user.role !== "admin")) { router.push("/dashboard"); return; }
-    fetch("http://localhost:5000/api/admin/stats", { credentials: "include" })
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/stats`, { credentials: "include" })
       .then(r => r.json())
       .then(d => { if (d.success) setStats(d.stats); })
       .catch(console.error);

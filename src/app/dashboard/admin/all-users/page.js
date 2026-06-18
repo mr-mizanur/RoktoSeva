@@ -5,13 +5,13 @@ export default function AllUsers() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/admin/all-users')
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/all-users`)
       .then(res => res.json())
       .then(data => setUsers(data.data));
   }, []);
 
   const handleUpdate = async (id, updateData) => {
-    await fetch(`http://localhost:5000/api/admin/update-user/${id}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/update-user/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updateData)

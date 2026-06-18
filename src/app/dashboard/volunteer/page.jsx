@@ -17,7 +17,7 @@ export default function VolunteerDashboard() {
       router.push("/dashboard"); return;
     }
     if (!isPending && user) {
-      fetch("http://localhost:5000/api/posts/all-requests/pending", { credentials: "include" })
+      fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/all-requests/pending`, { credentials: "include" })
         .then(r => r.json())
         .then(d => { if (d.success) setRequests(d.data); })
         .catch(console.error)

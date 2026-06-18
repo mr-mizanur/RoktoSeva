@@ -18,14 +18,14 @@ export default function EditRequest() {
 
   // রিকোয়েস্টের পুরনো ডেটা ফেচ করা
   useEffect(() => {
-    fetch(`http://localhost:5000/api/blood-request/${id}`)
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/blood-request/${id}`)
       .then(res => res.json())
       .then(data => setFormData(data.data));
   }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch(`http://localhost:5000/api/admin/request/${id}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/request/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)

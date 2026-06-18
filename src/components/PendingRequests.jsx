@@ -10,7 +10,7 @@ export default function PendingRequests() {
   useEffect(() => {
     const fetchPendingRequests = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/posts/all-requests/pending');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/all-requests/pending`);
         const data = await res.json();
         if (data.success) {
           setRequests(data.data);

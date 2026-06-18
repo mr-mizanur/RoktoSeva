@@ -16,7 +16,7 @@ export default function DonorDashboard() {
   useEffect(() => {
     if (!isPending && !user) { router.push("/login"); return; }
     if (!isPending && user) {
-      fetch("http://localhost:5000/api/donor/recent-requests", { credentials: "include" })
+      fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/donor/recent-requests`, { credentials: "include" })
         .then(r => r.json())
         .then(d => { if (d.success) setRecentRequests(d.data); })
         .catch(console.error)
@@ -32,7 +32,7 @@ export default function DonorDashboard() {
 
   const handleStatusUpdate = async (id, status) => {
     if (!confirm(`Mark as ${status}?`)) return;
-    await fetch(`http://localhost:5000/api/posts/blood-request/${id}/status`, {
+    await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/blood-request/${id}/status`, {
       method: "PATCH", headers: { "Content-Type": "application/json" },
       credentials: "include", body: JSON.stringify({ status }),
     });
@@ -41,7 +41,7 @@ export default function DonorDashboard() {
 
   const handleDelete = async (id) => {
     if (!confirm("Permanently delete this request?")) return;
-    await fetch(`http://localhost:5000/api/posts/blood-request/${id}`, { method: "DELETE", credentials: "include" });
+    await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/blood-request/${id}`, { method: "DELETE", credentials: "include" });
     setRecentRequests(prev => prev.filter(r => r._id !== id));
   };
 

@@ -7,13 +7,13 @@ export default function VolunteerRequests() {
   const [requests, setRequests] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/admin/all-requests')
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/all-requests`)
       .then(res => res.json())
       .then(data => setRequests(data.data));
   }, []);
 
   const updateStatus = async (id, status) => {
-    await fetch(`http://localhost:5000/api/admin/update-request-status/${id}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/update-request-status/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status })
