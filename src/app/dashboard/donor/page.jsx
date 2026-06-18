@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Eye, Edit, Trash2 } from "lucide-react"; // আইকনগুলো ইম্পোর্ট করে নিতে পারেন
+import { Eye, Trash2, CheckCircle2 } from "lucide-react"; 
 
 export default function DonorDashboard() {
   const router = useRouter();
@@ -14,9 +14,9 @@ export default function DonorDashboard() {
   const [recentRequests, setRecentRequests] = useState([]);
   const [loadingRequests, setLoadingRequests] = useState(true);
 
+  // ডেটা ফেচিং - শুধুমাত্র লগইন করা ইউজারের ইমেইল অনুযায়ী ৩টি রিকোয়েস্ট
   useEffect(() => {
     if (!isPending && !user) { router.push("/login"); return; }
-    
     
     if (!isPending && user?.email) {
       fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/donor/recent-requests?email=${encodeURIComponent(user.email)}`, { credentials: "include" })
@@ -57,14 +57,14 @@ export default function DonorDashboard() {
 
   return (
     <div className="space-y-6">
-      {/* Welcome banner */}
+      {/* Welcome Banner */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c101f] to-[#12182e] border border-white/5 p-6 shadow-xl">
         <p className="text-xs text-slate-500 uppercase tracking-widest font-bold mb-1">Welcome back</p>
         <h1 className="text-2xl sm:text-3xl font-black text-white">{user?.name} 🩸</h1>
         <p className="text-slate-400 text-sm mt-1">Blood Group: <span className="text-white font-bold">{user?.bloodGroup || "—"}</span> · {user?.district}, {user?.upazila}</p>
       </div>
 
-      {/* Quick action cards */}
+      {/* Quick Action Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Link href="/dashboard/create-donation-request" className="group rounded-2xl bg-[#0c101f] border border-white/5 p-5 hover:border-red-500/30 transition shadow-lg">
           <h4 className="font-bold text-white">Create Donation Request</h4>
@@ -74,14 +74,16 @@ export default function DonorDashboard() {
         </Link>
       </div>
 
-      {/* Recent requests table */}
+      {/* Recent Requests Table */}
       <div className="rounded-2xl bg-[#0c101f] border border-white/5 overflow-hidden shadow-xl">
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/5">
-          <h3 className="font-black text-sm uppercase text-white">Recent Requests</h3>
+          <h3 className="font-black text-sm uppercase text-white">My Recent Requests</h3>
         </div>
 
         {loadingRequests ? (
           <div className="flex justify-center py-12"><span className="loading loading-spinner text-red-500" /></div>
+        ) : recentRequests.length === 0 ? (
+          <div className="p-10 text-center text-slate-500">No requests found.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-slate-300">
@@ -103,15 +105,19 @@ export default function DonorDashboard() {
                     </td>
                     <td className="px-5 py-3">
                       <div className="flex items-center justify-center gap-2">
-                        {/* নতুন বাটন: View Full Request */}
+                        {/* View Full Request Link */}
                         <Link href={`/dashboard/request-details/${req._id}`} className="btn btn-xs bg-blue-500/10 border-blue-500/20 text-blue-400 hover:bg-blue-600 hover:text-white">
-                          View
+                          <Eye size={14} /> View
                         </Link>
                         
                         {req.status === "inprogress" && (
-                          <button onClick={() => handleStatusUpdate(req._id, "done")} className="btn btn-xs bg-emerald-600 border-0 text-white">Done</button>
+                          <button onClick={() => handleStatusUpdate(req._id, "done")} className="btn btn-xs bg-emerald-600 border-0 text-white hover:bg-emerald-700">
+                            <CheckCircle2 size={14} /> Done
+                          </button>
                         )}
-                        <button onClick={() => handleDelete(req._id)} className="btn btn-xs bg-red-500/10 border-red-500/20 text-red-400">Del</button>
+                        <button onClick={() => handleDelete(req._id)} className="btn btn-xs bg-red-500/10 border-red-500/20 text-red-400 hover:bg-red-600 hover:text-white">
+                          <Trash2 size={14} /> Del
+                        </button>
                       </div>
                     </td>
                   </tr>
