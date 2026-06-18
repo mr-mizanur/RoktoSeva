@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { authClient } from '@/lib/auth-client'; // 🎯 আপনার প্রজেক্টের Better Auth ক্লায়েন্ট ইম্পোর্ট
+import { authClient } from '@/lib/auth-client'; 
 
 const LoginPage = () => {
   const router = useRouter();
@@ -20,18 +20,18 @@ const LoginPage = () => {
     const password = formData.get("password");
 
     try {
-      // 🎯 Better Auth Sign In Engine 
+     
       const { data, error: authError } = await authClient.signIn.email({
         email,
         password,
-        // 💡 Better Auth সফলভাবে লগইন হলে অটোমেটিক কুকি সেট করে ড্যাশবোর্ডে পুশ করবে
+      
         callbackURL: "/dashboard" 
       });
 
       if (authError) {
         setError(authError.message || "Invalid email or password.");
       } else {
-        // যদি কলব্যাক ইউআরএল কাজ না করে, সেফটি হিসেবে ম্যানুয়াল পুশ
+   
         router.push("/dashboard");
       }
     } catch (err) {
@@ -43,10 +43,10 @@ const LoginPage = () => {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-[#070a13] px-4 py-12 overflow-hidden">
-      {/* Background Futuristic Red Glow - matching registration page */}
+    
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-red-600/5 rounded-full blur-[140px] -z-10" />
 
-      {/* Login Glass Card */}
+      
       <div className="w-full max-w-md backdrop-blur-xl bg-[#0c101f]/80 border border-white/5 rounded-3xl p-8 shadow-[0_20px_50px_rgba(0,0,0,0.6)] relative z-10">
         <h2 className="text-3xl font-black text-center text-white uppercase tracking-wider mb-2">
           Secure <span className="text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.4)]">Login</span>
@@ -55,7 +55,7 @@ const LoginPage = () => {
           Access the core quantum blood network
         </p>
 
-        {/* Error Alert Box */}
+        
         {error && (
           <div className="alert alert-error bg-red-500/10 border border-red-500/20 text-red-400 text-sm rounded-xl mb-6 py-3">
             <span>{error}</span>
@@ -64,7 +64,7 @@ const LoginPage = () => {
 
         <form onSubmit={handleLogin} className="space-y-5">
           
-          {/* Email Field */}
+     
           <div className="form-control">
             <label className="label-text text-xs uppercase font-bold tracking-wider text-slate-400 mb-2">
               Email Address
@@ -78,16 +78,14 @@ const LoginPage = () => {
             />
           </div>
 
-          {/* Password Field */}
+         
           <div className="form-control">
             <div className="flex justify-between items-center mb-2">
               <label className="label-text text-xs uppercase font-bold tracking-wider text-slate-400">
                 Password
               </label>
-              {/* Optional: Forgot Password Link */}
-              <Link href="#" className="text-[11px] text-slate-500 hover:text-red-400 uppercase font-bold tracking-wider transition-colors">
-                Forgot?
-              </Link>
+              
+              
             </div>
             <input 
               type="password" 
@@ -98,7 +96,7 @@ const LoginPage = () => {
             />
           </div>
 
-          {/* Submit Button */}
+          
           <div className="form-control pt-4">
             <button 
               type="submit" 
@@ -115,7 +113,7 @@ const LoginPage = () => {
           </div>
         </form>
 
-        {/* Footer Link to Register */}
+       
         <div className="text-center text-sm text-slate-400 mt-6 font-medium">
           New to the RoktoSeva Network? <Link href="/register" className="text-red-500 hover:text-red-400 transition-colors duration-200 font-bold underline">Create Account</Link>
         </div>

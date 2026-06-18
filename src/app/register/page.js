@@ -51,7 +51,7 @@ const RegisterPage = () => {
     }
 
     try {
-      // 📸 Upload Profile Image to ImgBB
+     
       const imgBbKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY; 
       if (!imgBbKey) throw new Error("ImgBB API Key is missing!");
 
@@ -67,7 +67,7 @@ const RegisterPage = () => {
 
       const imageUrl = imgData.data.url;
 
-      // 🩸 Better Auth Sign Up
+    
       const { data, error: authError } = await signUp.email({
         email,
         password,
@@ -135,7 +135,7 @@ const RegisterPage = () => {
             </select>
           </div>
 
-          {/* District Selector (Dynamic) */}
+        
           <div className="form-control">
             <label className="label-text text-xs uppercase font-bold tracking-wider text-slate-400 mb-2">District</label>
             <select name="district" required onChange={handleDistrictChange} className="select select-bordered w-full bg-[#0c101f] border-white/10 rounded-xl text-white focus:border-red-500/50 transition-all duration-200">
@@ -146,7 +146,7 @@ const RegisterPage = () => {
             </select>
           </div>
 
-          {/* Upazila Selector (Dynamic Based on District ID) */}
+         
           <div className="form-control">
             <label className="label-text text-xs uppercase font-bold tracking-wider text-slate-400 mb-2">Upazila</label>
             <select name="upazila" required disabled={!selectedDistrict || upazilas.length === 0} className="select select-bordered w-full bg-[#0c101f] border-white/10 rounded-xl text-white focus:border-red-500/50 disabled:bg-white/[0.01] disabled:text-slate-600 transition-all duration-200">

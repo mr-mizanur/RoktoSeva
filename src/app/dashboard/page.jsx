@@ -10,22 +10,22 @@ const DashboardGateway = () => {
   const user = session?.user;
 
   useEffect(() => {
-    // লোডিং শেষ হওয়া পর্যন্ত অপেক্ষা করব
+  
     if (isPending) return;
 
-    // লগইন করা না থাকলে সোজা লগইন পেইজে কিক আউট
+   
     if (!user) {
       router.push("/login");
       return;
     }
 
-    // 🎯 ইউজারের রোল অনুযায়ী নির্দিষ্ট ফোল্ডারের পথ (Path) ওপেন হবে
+    
     if (user.role === 'admin') {
       router.push("/dashboard/admin");
     } else if (user.role === 'volunteer') {
       router.push("/dashboard/volunteer");
     } else {
-      // ডিফল্ট বা donor রোল হলে donor ফোল্ডার ওপেন হবে
+     
       router.push("/dashboard/donor");
     }
   }, [user, isPending, router]);
@@ -40,5 +40,5 @@ const DashboardGateway = () => {
   );
 };
 
-// 🎯 এই লাইনটি সবচেয়ে গুরুত্বপূর্ণ! এটা মিস হলেই ওই এরর দেয়।
+
 export default DashboardGateway;
