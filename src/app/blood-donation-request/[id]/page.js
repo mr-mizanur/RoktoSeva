@@ -2,11 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { authClient } from '@/lib/auth-client';
 import { 
   ArrowLeft, MapPin, Hospital, CalendarClock, 
-  Phone, User, Mail, ShieldCheck, Droplet, AlertTriangle, X 
+  Phone, ShieldCheck, Droplet, AlertTriangle 
 } from 'lucide-react';
 
 export default function RequestDetailsPage() {
@@ -19,6 +18,7 @@ export default function RequestDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
 
+  // রিকোয়েস্ট ডিটেইলস ফেচ করা
   useEffect(() => {
     if (!id) return;
     const fetchRequestDetails = async () => {
@@ -29,12 +29,13 @@ export default function RequestDetailsPage() {
           const matched = data.data.find(item => String(item._id) === String(id));
           if (matched) setRequest(matched);
         }
-      } catch (err) { console.error("Error:", err); }
+      } catch (err) { console.error("Error fetching:", err); }
       finally { setLoading(false); }
     };
     fetchRequestDetails();
   }, [id]);
 
+  // ডোনেশন কনফার্ম করার লজিক
   const handleConfirmDonation = async (e) => {
     e.preventDefault();
     if (!user) { alert("Please log in to donate!"); return; }
@@ -50,22 +51,37 @@ export default function RequestDetailsPage() {
           donorEmail: user.email
         }),
       });
-      if ((await res.json()).success) {
+      
+      const result = await res.json();
+      if (result.success) {
         document.getElementById('donation_confirm_modal').close();
-        alert("Donation request successfully updated!");
-        router.push("/dashboard");
+        alert("Success! You are now the donor for this request.");
+        router.push("/dashboard"); // ডোনেশন কনফার্ম হলে ড্যাশবোর্ডে নিয়ে যাবে
+      } else {
+        alert(result.message || "Update failed!");
       }
     } catch (err) { console.error(err); }
     finally { setUpdating(false); }
   };
 
-  if (loading || isAuthPending) return <div className="min-h-screen bg-[#070a13] flex items-center justify-center"><span className="loading loading-spinner text-red-500"></span></div>;
+  if (loading || isAuthPending) return (
+    <div className="min-h-screen bg-[#070a13] flex items-center justify-center">
+      <span className="loading loading-spinner text-red-500 loading-lg"></span>
+    </div>
+  );
+
+  if (!request) return (
+    <div className="min-h-screen bg-[#070a13] text-white flex flex-col items-center justify-center">
+      <p className="mb-4">Request not found or already accepted.</p>
+      <button onClick={() => router.back()} className="text-red-500 underline">Go Back</button>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-[#070a13] text-white p-6 sm:p-12">
       <div className="max-w-3xl mx-auto space-y-8">
         <button onClick={() => router.back()} className="flex items-center gap-2 text-slate-400 hover:text-red-500 transition-colors">
-          <ArrowLeft size={18} /> <span className="font-bold tracking-widest text-xs uppercase">Back to Grid</span>
+          <ArrowLeft size={18} /> <span className="font-bold tracking-widest text-xs uppercase">Back to List</span>
         </button>
 
         <div className="backdrop-blur-xl bg-[#0c101f]/60 border border-white/10 p-8 rounded-3xl shadow-2xl">
@@ -74,19 +90,19 @@ export default function RequestDetailsPage() {
               <span className="flex items-center gap-2 text-red-400 font-bold text-[10px] uppercase tracking-widest bg-red-500/10 px-3 py-1 rounded-full w-fit">
                 <AlertTriangle size={12} /> Emergency Request
               </span>
-              <h1 className="text-4xl font-black mt-4 uppercase">{request?.patientName}</h1>
+              <h1 className="text-4xl font-black mt-4 uppercase">{request.patientName}</h1>
             </div>
             <div className="w-20 h-20 bg-gradient-to-br from-red-600 to-rose-700 rounded-3xl flex flex-col items-center justify-center font-black text-2xl">
               <Droplet size={24} className="mb-1" />
-              {request?.bloodGroup}
+              {request.bloodGroup}
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
-            <InfoCard icon={<Hospital size={20}/>} label="Hospital" value={request?.hospital} />
-            <InfoCard icon={<MapPin size={20}/>} label="Location" value={`${request?.upazila}, ${request?.district}`} />
-            <InfoCard icon={<CalendarClock size={20}/>} label="Timeline" value={`${request?.dateNeeded} | ${request?.donationTime}`} />
-            <InfoCard icon={<Phone size={20}/>} label="Contact" value={request?.contactNumber} />
+            <InfoCard icon={<Hospital size={20}/>} label="Hospital" value={request.hospital} />
+            <InfoCard icon={<MapPin size={20}/>} label="Location" value={`${request.upazila}, ${request.district}`} />
+            <InfoCard icon={<CalendarClock size={20}/>} label="Timeline" value={`${request.dateNeeded} | ${request.donationTime}`} />
+            <InfoCard icon={<Phone size={20}/>} label="Contact" value={request.contactNumber} />
           </div>
 
           <button 
@@ -98,20 +114,19 @@ export default function RequestDetailsPage() {
         </div>
       </div>
 
-      {/* Confirmation Modal */}
       <dialog id="donation_confirm_modal" className="modal modal-bottom sm:modal-middle">
         <div className="modal-box bg-[#0c101f] border border-white/10 rounded-3xl p-8">
           <h3 className="text-xl font-black uppercase text-red-500">Confirm Donation</h3>
-          <p className="text-slate-400 text-sm mt-2 mb-6">Are you sure you want to proceed with this donation request?</p>
+          <p className="text-slate-400 text-sm mt-2 mb-6">Are you sure you want to donate blood for this patient?</p>
           
           <form onSubmit={handleConfirmDonation} className="space-y-4">
-            <input type="text" value={user?.name || ""} readOnly className="w-full bg-white/5 p-3 rounded-xl border border-white/10" />
-            <input type="text" value={user?.email || ""} readOnly className="w-full bg-white/5 p-3 rounded-xl border border-white/10" />
+            <input type="text" value={user?.name || "Anonymous"} readOnly className="w-full bg-white/5 p-3 rounded-xl border border-white/10" />
+            <input type="text" value={user?.email || "No Email"} readOnly className="w-full bg-white/5 p-3 rounded-xl border border-white/10" />
             
             <div className="flex gap-3 mt-6">
               <button type="button" onClick={() => document.getElementById('donation_confirm_modal').close()} className="flex-1 py-3 bg-white/10 rounded-xl font-bold">Cancel</button>
               <button type="submit" disabled={updating} className="flex-1 py-3 bg-red-600 rounded-xl font-bold">
-                {updating ? "Processing..." : "Confirm"}
+                {updating ? "Processing..." : "Confirm Donation"}
               </button>
             </div>
           </form>
@@ -121,7 +136,6 @@ export default function RequestDetailsPage() {
   );
 }
 
-// Helper Card Component
 function InfoCard({ icon, label, value }) {
   return (
     <div className="flex items-start gap-4 p-4 bg-white/5 rounded-2xl border border-white/5">
