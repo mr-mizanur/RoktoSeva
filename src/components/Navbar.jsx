@@ -78,6 +78,7 @@ const Navbar = () => {
           <Link href="/" className={getLinkStyles('/')}>Home</Link>
           <Link href="/dashboard/my-donation-requests" className={getLinkStyles('/dashboard/my-donation-requests')}>Donation Requests</Link>
           {user && <Link href="/dashboard/funding" className={getLinkStyles('/dashboard/funding')}>Funding</Link>}
+          <Link href="/contact" className={getLinkStyles('/contact')}>Contact</Link>
         </div>
 
        
@@ -153,12 +154,19 @@ const Navbar = () => {
             >
               Home
             </Link>
-            <Link 
-              href="/dashboard/my-donation-requests" 
+            <Link
+              href="/dashboard/my-donation-requests"
               onClick={() => setIsMobileMenuOpen(false)}
               className={`p-3 rounded-xl font-bold uppercase tracking-widest text-sm text-center ${pathname === '/dashboard/my-donation-requests' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'text-slate-400 bg-white/[0.01]'}`}
             >
               Donation Requests
+            </Link>
+            <Link
+              href="/contact"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`p-3 rounded-xl font-bold uppercase tracking-widest text-sm text-center ${pathname === '/contact' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'text-slate-400 bg-white/[0.01]'}`}
+            >
+              Contact
             </Link>
             {user && (
               <Link 

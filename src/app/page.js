@@ -1,5 +1,6 @@
 import Hero from "@/components/Home/Hero";
 import PendingRequests from "@/components/PendingRequests";
+import ContactSection from "@/components/ContactSection";
 
 export const metadata = {
   title: "Home",
@@ -16,6 +17,7 @@ export default function Home() {
      <main>
        <Hero />
       <PendingRequests />
+      <ContactSection />
      </main>
     </div>
   );
