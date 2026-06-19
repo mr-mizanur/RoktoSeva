@@ -5,97 +5,78 @@ import Link from 'next/link';
 
 const Hero = () => {
   return (
-    <div 
-      className="relative min-h-[85vh] flex items-center justify-center bg-[#070a13] overflow-hidden px-4 sm:px-6 lg:px-8 bg-cover bg-center bg-no-repeat"
-      style={{ 
-       
-        backgroundImage: `url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=1920&auto=format&fit=crop')` 
-      }}
-    >
+    <section className="relative min-h-[90vh] flex items-center justify-center bg-[#050505] overflow-hidden">
       
-   
-      <div className="absolute inset-0 bg-gradient-to-b from-[#070a13]/90 via-[#070a13]/85 to-[#070a13]/95 backdrop-blur-[6px]" />
+      {/* High-quality Thematic Background */}
+      <div 
+        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat opacity-40"
+        style={{ 
+          backgroundImage: `url('https://images.unsplash.com/photo-1615461066841-6116e61058f4?q=80&w=2000&auto=format&fit=crop')` 
+        }}
+      />
       
-     
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_100%)]" />
-      
-   
-      <div className="absolute top-1/4 left-10 -z-10 w-72 h-72 bg-red-600/10 rounded-full blur-[120px] animate-pulse" />
-      <div className="absolute bottom-1/4 right-10 -z-10 w-80 h-80 bg-rose-600/10 rounded-full blur-[150px]" />
+      {/* Professional Overlays */}
+      <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,transparent_0%,#050505_100%)]" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent" />
 
-      <div className="max-w-5xl mx-auto text-center relative z-10 space-y-8">
+      {/* Main Content Container */}
+      <div className="max-w-6xl mx-auto px-6 relative z-10 text-center">
         
-       
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-500/5 border border-red-500/20 shadow-[0_0_15px_rgba(239,68,68,0.1)] backdrop-blur-md animate-bounce">
-          <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-          <span className="text-xs font-bold uppercase tracking-widest text-red-400">
-            Next-Gen Blood Coordination Platform
+        {/* Badge */}
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 mb-6">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+          </span>
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400">
+            Trusted Lifesaving Network
           </span>
         </div>
 
-       
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white uppercase leading-tight">
-          Every Drop Counts <br />
-          <span className="bg-gradient-to-r from-red-500 via-rose-500 to-red-600 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(239,68,68,0.3)]">
-            Save A Life Today
+        {/* Heading */}
+        <h1 className="text-5xl md:text-8xl font-extrabold text-white tracking-tighter mb-8 leading-[0.9]">
+          Donate Blood,<br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-rose-600">
+            Inspire Life.
           </span>
         </h1>
 
-    
-        <p className="max-w-2xl mx-auto text-base sm:text-xl text-slate-400 font-medium tracking-wide leading-relaxed">
-          RoktoSeva seamlessly bridges the gap between blood donors and recipients. Empowering immediate medical response through decentralized, high-speed coordination.
+        {/* Sub-headline */}
+        <p className="max-w-xl mx-auto text-lg md:text-xl text-slate-400 font-light mb-10 leading-relaxed">
+          RoktoSeva connects compassionate donors with patients in urgent need. Join a community dedicated to seamless, real-time medical support.
         </p>
 
-       
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-          
-        
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link 
             href="/register" 
-            className="w-full sm:w-auto relative group px-8 py-4 text-sm font-bold uppercase tracking-wider text-white bg-gradient-to-r from-red-600 to-rose-600 rounded-xl shadow-[0_0_25px_rgba(220,38,38,0.3)] transition-all duration-300 hover:shadow-[0_0_35px_rgba(220,38,38,0.5)] hover:scale-[1.03] overflow-hidden border border-red-500/20"
+            className="px-8 py-4 bg-white text-black font-bold rounded-lg hover:bg-slate-200 transition-all active:scale-95"
           >
-            <span className="relative z-10 flex items-center justify-center gap-2">
-              Join as a donor
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-              </svg>
-            </span>
-            <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+            Become a Donor
           </Link>
-
-         
           <Link 
             href="/search" 
-            className="w-full sm:w-auto px-8 py-4 text-sm font-bold uppercase tracking-wider text-slate-300 bg-white/[0.02] border border-white/10 rounded-xl backdrop-blur-md transition-all duration-300 hover:text-white hover:bg-white/5 hover:border-red-500/40 hover:shadow-[0_0_25px_rgba(239,68,68,0.15)] hover:scale-[1.03]"
+            className="px-8 py-4 bg-white/5 text-white border border-white/10 font-medium rounded-lg hover:bg-white/10 transition-all backdrop-blur-sm"
           >
-            <span className="flex items-center justify-center gap-2">
-              Search Donors
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-              </svg>
-            </span>
+            Request Blood
           </Link>
-
         </div>
 
-      
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-3xl mx-auto pt-12 border-t border-white/5 text-left">
-          <div className="p-4 bg-white/[0.01] border border-white/5 rounded-2xl backdrop-blur-sm">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Active Donors</p>
-            <h3 className="text-2xl font-black text-white mt-1">2,400+</h3>
-          </div>
-          <div className="p-4 bg-white/[0.01] border border-white/5 rounded-2xl backdrop-blur-sm">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Requests Resolved</p>
-            <h3 className="text-2xl font-black text-red-500 mt-1">98.4%</h3>
-          </div>
-          <div className="p-4 bg-white/[0.01] border border-white/5 rounded-2xl backdrop-blur-sm col-span-2 md:col-span-1">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Response Time</p>
-            <h3 className="text-2xl font-black text-white mt-1">&lt; 5 Mins</h3>
-          </div>
+        {/* Stats Row */}
+        <div className="mt-20 pt-10 border-t border-white/10 grid grid-cols-3 gap-8 max-w-2xl mx-auto">
+          {[
+            { label: "Active Donors", value: "12K+" },
+            { label: "Lives Impacted", value: "45K+" },
+            { label: "Avg. Response", value: "3m" },
+          ].map((stat, i) => (
+            <div key={i}>
+              <div className="text-2xl md:text-3xl font-bold text-white">{stat.value}</div>
+              <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-1">{stat.label}</div>
+            </div>
+          ))}
         </div>
-
       </div>
-    </div>
+    </section>
   );
 };
 

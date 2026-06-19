@@ -82,8 +82,9 @@ export default function DashboardLayout({ children }) {
       {/* Logo */}
       <div className="px-5 py-5 border-b border-white/5 flex items-center gap-3">
         <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-red-600 to-rose-700 flex items-center justify-center shadow-[0_0_20px_rgba(220,38,38,0.4)] shrink-0">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-white">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
+            <path d="M12 2C9 6 5 10 5 14C5 18.4 8.1 22 12 22C15.9 22 19 18.4 19 14C19 10 15 6 12 2Z" fill="white"/>
+            <ellipse cx="10" cy="11" rx="1.5" ry="2.5" fill="white" fillOpacity="0.4"/>
           </svg>
         </div>
         <div>

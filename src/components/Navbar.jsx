@@ -62,8 +62,9 @@ const Navbar = () => {
   
           <Link href="/" className="flex items-center gap-3 group">
             <div className="relative flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-red-600 via-rose-600 to-red-700 shadow-[0_0_25px_rgba(220,38,38,0.5)] transition-all duration-500 group-hover:rotate-[360deg]">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 sm:w-6 sm:h-6 text-white animate-pulse">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 sm:w-6 sm:h-6">
+                <path d="M12 2C9 6 5 10 5 14C5 18.4 8.1 22 12 22C15.9 22 19 18.4 19 14C19 10 15 6 12 2Z" fill="white"/>
+                <ellipse cx="10" cy="11" rx="1.5" ry="2.5" fill="white" fillOpacity="0.4"/>
               </svg>
             </div>
             <span className="text-lg sm:text-xl font-black bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent uppercase tracking-widest">

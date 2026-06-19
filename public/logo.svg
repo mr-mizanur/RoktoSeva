@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 52" role="img" aria-label="RoktoSeva Logo">
+  <defs>
+    <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dc2626"/>
+      <stop offset="100%" stop-color="#9f1239"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Icon background -->
+  <rect width="52" height="52" rx="13" fill="url(#iconGrad)" filter="url(#glow)"/>
+
+  <!-- Blood drop path (24x24 grid, centered at 26,26 in 52x52 box) -->
+  <path
+    d="M26 6 C21 12 13 18 13 26 C13 33.7 18.9 40 26 40 C33.1 40 39 33.7 39 26 C39 18 31 12 26 6Z"
+    fill="white"
+  />
+  <!-- Highlight on drop -->
+  <ellipse cx="22" cy="20" rx="3" ry="4.5" fill="white" fill-opacity="0.35"/>
+
+  <!-- Wordmark -->
+  <text
+    x="64"
+    y="37"
+    font-family="'Arial Black', 'Arial Bold', Arial, sans-serif"
+    font-weight="900"
+    font-size="30"
+    letter-spacing="-1"
+  >
+    <tspan fill="white">Rokto</tspan><tspan fill="#ef4444">Seva</tspan>
+  </text>
+</svg>
