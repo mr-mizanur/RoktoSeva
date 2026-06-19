@@ -57,12 +57,21 @@ export default function SearchPage() {
   const [selectedBlood, setSelectedBlood] = useState("");
   const [selectedDistrictId, setSelectedDistrictId] = useState("");
 
-  // Fetch Pending Requests
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9;
+
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/all-requests/pending`)
       .then(r => r.json())
       .then(d => d.success && setPendingRequests(d.data));
   }, []);
+
+  // Pagination calculations
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentRequests = pendingRequests.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(pendingRequests.length / itemsPerPage);
 
   const filteredUpazilas = useMemo(() => 
     upazilas.filter(u => u.district_id === selectedDistrictId), [selectedDistrictId]
@@ -90,6 +99,7 @@ export default function SearchPage() {
     <div className="min-h-screen bg-[#070a13] p-6 space-y-12">
       {/* Search Form */}
       <form onSubmit={handleSearch} className="max-w-4xl mx-auto bg-[#0c101f] p-8 rounded-3xl border border-white/5 space-y-6">
+        {/* ... (আপনার আগের ফর্ম কোড) ... */}
         <div className="flex flex-wrap gap-2">
           {BLOOD_GROUPS.map(bg => (
             <button key={bg} type="button" onClick={() => setSelectedBlood(bg)} className={`px-4 py-2 rounded-xl text-xs font-bold ${selectedBlood === bg ? "bg-red-600 text-white" : "bg-white/5 text-slate-400"}`}>
@@ -110,17 +120,26 @@ export default function SearchPage() {
         <button type="submit" className="w-full py-4 bg-red-600 text-white rounded-xl font-bold">SEARCH DONORS</button>
       </form>
 
-      {/* Results */}
+      {/* Donor Results */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
         {loading ? <p className="text-white text-center col-span-3">Searching...</p> : donors.map(d => <DonorCard key={d._id} donor={d} />)}
       </div>
 
-      {/* Pending Requests */}
+      {/* Pending Requests with Pagination */}
       <div className="max-w-6xl mx-auto">
         <h2 className="text-2xl font-bold text-white mb-6">Pending Requests</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {pendingRequests.map(req => <RequestCard key={req._id} req={req} />)}
+          {currentRequests.map(req => <RequestCard key={req._id} req={req} />)}
         </div>
+
+        {/* Pagination Buttons */}
+        {totalPages > 1 && (
+          <div className="flex justify-center gap-4 mt-10">
+            <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)} className="px-4 py-2 bg-white/5 rounded-lg text-white disabled:opacity-30">Prev</button>
+            <span className="text-white font-bold py-2">{currentPage} / {totalPages}</span>
+            <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)} className="px-4 py-2 bg-white/5 rounded-lg text-white disabled:opacity-30">Next</button>
+          </div>
+        )}
       </div>
     </div>
   );
