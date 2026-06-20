@@ -1,5 +1,7 @@
 import Hero from "@/components/Home/Hero";
 import PendingRequests from "@/components/PendingRequests";
+import GuidelinesPreview from "@/components/Home/GuidelinesPreview";
+import FAQPreview from "@/components/Home/FAQPreview";
 import ContactSection from "@/components/ContactSection";
 
 export const metadata = {
@@ -14,11 +16,13 @@ export const metadata = {
 export default function Home() {
   return (
     <div className="min-h-screen bg-[#070a13] text-white">
-     <main>
-       <Hero />
-      <PendingRequests />
-      <ContactSection />
-     </main>
+      <main>
+        <Hero />
+        <PendingRequests />
+        <GuidelinesPreview />
+        <FAQPreview />
+        <ContactSection />
+      </main>
     </div>
   );
 }

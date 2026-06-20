@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ConditionalNavbar from "@/components/ConditionalNavbar";
-import Footer from "@/components/Footer";
+import ConditionalFooter from "@/components/ConditionalFooter";
 import ToastProvider from "@/components/ToastProvider";
 
 const geistSans = Geist({
@@ -75,7 +75,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-full flex flex-col bg-[#070a13] text-white">
         <ConditionalNavbar />
         {children}
-        <Footer />
+        <ConditionalFooter />
         <ToastProvider />
         </body>
     </html>

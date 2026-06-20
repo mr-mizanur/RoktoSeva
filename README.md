@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="public/logo.png" alt="RoktoSeva Logo" width="80" />
+<img src="public/logo.svg" alt="RoktoSeva Logo" width="80" />
 
 # RoktoSeva
 

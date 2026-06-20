@@ -223,6 +223,15 @@ export default function DashboardLayout({ children }) {
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
           {children}
         </main>
+
+        <footer className="border-t border-white/5 px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-600">
+          <p>© {new Date().getFullYear()} RoktoSeva. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <a href="/guidelines" className="hover:text-slate-400 transition-colors duration-200">Guidelines</a>
+            <a href="/faq" className="hover:text-slate-400 transition-colors duration-200">FAQ</a>
+            <a href="/contact" className="hover:text-slate-400 transition-colors duration-200">Contact</a>
+          </div>
+        </footer>
       </div>
     </div>
   );

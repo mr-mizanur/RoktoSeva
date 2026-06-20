@@ -30,6 +30,8 @@ const Footer = () => {
           <Link href="/dashboard/my-donation-requests" className="text-sm hover:text-white transition-colors duration-200">Donation Requests</Link>
           <Link href="/dashboard/funding" className="text-sm hover:text-white transition-colors duration-200">Support Us</Link>
           <Link href="/dashboard/create-donation-request" className="text-sm hover:text-white transition-colors duration-200">Request Blood</Link>
+          <Link href="/guidelines" className="text-sm hover:text-white transition-colors duration-200">Donation Guidelines</Link>
+          <Link href="/faq" className="text-sm hover:text-white transition-colors duration-200">FAQ</Link>
           <Link href="/contact" className="text-sm hover:text-white transition-colors duration-200">Contact Us</Link>
         </div>
 
