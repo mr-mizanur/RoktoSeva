@@ -26,7 +26,7 @@ const STATUS_LABEL = {
   canceled: "Canceled",
 };
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 3;
 
 function StatCard({ label, value, icon, color }) {
   const colors = {
@@ -171,7 +171,7 @@ export default function DonorDashboard() {
   return (
     <div className="max-w-6xl mx-auto space-y-6">
 
-      {/* ── Welcome Banner ── */}
+    
       <div className="relative backdrop-blur-xl bg-[#0c101f]/70 border border-white/5 rounded-3xl p-6 sm:p-8 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_15px_#ef4444]" />
         <div className="absolute inset-0 bg-gradient-to-br from-red-500/[0.04] via-transparent to-transparent pointer-events-none" />
@@ -222,7 +222,7 @@ export default function DonorDashboard() {
         </div>
       </div>
 
-      {/* ── Stats ── */}
+    
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <StatCard label="Total Donations" value={stats.total}      icon={<TrendingUp size={18} />}   color="red" />
         <StatCard label="Pending"          value={stats.pending}    icon={<Clock size={18} />}         color="yellow" />
