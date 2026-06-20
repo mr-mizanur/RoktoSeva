@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { authClient } from '@/lib/auth-client'; 
+import { authClient } from '@/lib/auth-client';
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -21,6 +22,7 @@ const Navbar = () => {
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
+          toast.success("Logged out successfully.");
           router.push("/login");
           router.refresh();
         }

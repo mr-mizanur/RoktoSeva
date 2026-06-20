@@ -5,11 +5,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signUp } from '@/lib/auth-client';
 import { districts as allDistricts, upazilas as allUpazilas } from '@/data/locationData';
+import { toast } from 'react-toastify';
 
 const RegisterPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const [upazilas, setUpazilas] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState("");
@@ -30,7 +30,6 @@ const RegisterPage = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
 
     const formData = new FormData(e.target);
     const name = formData.get("name");
@@ -40,19 +39,17 @@ const RegisterPage = () => {
     const bloodGroup = formData.get("blood_group");
     const avatarFile = formData.get("avatar");
 
-
     const districtName = allDistricts.find(d => d.id === selectedDistrict)?.name || "";
     const upazilaName = formData.get("upazila");
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match!");
+      toast.error("Passwords do not match!");
       setLoading(false);
       return;
     }
 
     try {
-      // 📸 Upload Profile Image to ImgBB
-      const imgBbKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY; 
+      const imgBbKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
       if (!imgBbKey) throw new Error("ImgBB API Key is missing!");
 
       const imgFormData = new FormData();
@@ -67,7 +64,6 @@ const RegisterPage = () => {
 
       const imageUrl = imgData.data.url;
 
-    
       const { data, error: authError } = await signUp.email({
         email,
         password,
@@ -79,12 +75,13 @@ const RegisterPage = () => {
       });
 
       if (authError) {
-        setError(authError.message);
+        toast.error(authError.message);
       } else {
+        toast.success("Account created successfully! Redirecting...");
         router.push("/dashboard");
       }
     } catch (err) {
-      setError(err.message || "An unexpected error occurred.");
+      toast.error(err.message || "An unexpected error occurred.");
     } finally {
       setLoading(false);
     }
@@ -101,12 +98,6 @@ const RegisterPage = () => {
         <p className="text-center text-slate-400 text-sm mb-8 font-medium uppercase tracking-widest">
           Join the elite network of donor lifesavers
         </p>
-
-        {error && (
-          <div className="alert alert-error bg-red-500/10 border border-red-500/20 text-red-400 text-sm rounded-xl mb-6 py-3">
-            <span>{error}</span>
-          </div>
-        )}
 
         <form onSubmit={handleRegister} className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           

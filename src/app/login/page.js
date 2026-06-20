@@ -3,39 +3,36 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { authClient } from '@/lib/auth-client'; 
+import { authClient } from '@/lib/auth-client';
+import { toast } from 'react-toastify';
 
 const LoginPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
 
     const formData = new FormData(e.target);
     const email = formData.get("email");
     const password = formData.get("password");
 
     try {
-     
       const { data, error: authError } = await authClient.signIn.email({
         email,
         password,
-      
-        callbackURL: "/dashboard" 
+        callbackURL: "/dashboard"
       });
 
       if (authError) {
-        setError(authError.message || "Invalid email or password.");
+        toast.error(authError.message || "Invalid email or password.");
       } else {
-   
+        toast.success("Login successful! Redirecting...");
         router.push("/dashboard");
       }
     } catch (err) {
-      setError(err.message || "An unexpected error occurred during authentication.");
+      toast.error(err.message || "An unexpected error occurred during authentication.");
     } finally {
       setLoading(false);
     }
@@ -54,13 +51,6 @@ const LoginPage = () => {
         <p className="text-center text-slate-400 text-sm mb-8 font-medium uppercase tracking-widest">
           Access the core quantum blood network
         </p>
-
-        
-        {error && (
-          <div className="alert alert-error bg-red-500/10 border border-red-500/20 text-red-400 text-sm rounded-xl mb-6 py-3">
-            <span>{error}</span>
-          </div>
-        )}
 
         <form onSubmit={handleLogin} className="space-y-5">
           

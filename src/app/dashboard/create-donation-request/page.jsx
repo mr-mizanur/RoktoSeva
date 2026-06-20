@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { authClient } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
 import { districts as allDistricts, upazilas as allUpazilas } from '@/data/locationData';
+import { toast } from 'react-toastify';
 
 export default function CreateDonationRequest() {
   const router = useRouter();
@@ -11,10 +12,6 @@ export default function CreateDonationRequest() {
   const user = session?.user;
 
   const [loading, setLoading] = useState(false);
-  
-
-  const [toast, setToast] = useState({ show: false, type: "", text: "" });
-  
   const [upazilas, setUpazilas] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState("");
 
@@ -39,10 +36,9 @@ export default function CreateDonationRequest() {
   const handleSubmitRequest = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setToast({ show: false, type: "", text: "" });
 
     if (user?.status === "blocked") {
-      setToast({ show: true, type: "error", text: "🚫 Access Denied! Your account is 'Blocked'." });
+      toast.error("Access Denied! Your account is blocked.");
       setLoading(false);
       return;
     }
@@ -78,23 +74,17 @@ export default function CreateDonationRequest() {
       const data = await res.json();
 
       if (data.success) {
-        // 🎉 সাকসেস কাস্টম টোস্ট ফায়ার হবে
-        setToast({ show: true, type: "success", text: "🚀 Blood request successfully deployed to RoktoSeva Grid!" });
+        toast.success("Blood request successfully submitted!");
         e.target.reset();
         setSelectedDistrict("");
         setUpazilas([]);
-        
-        // টোস্ট দেখানোর পর ৩ সেকেন্ড ব্রেক নিয়ে ড্যাশবোর্ডে পাঠাবে
-        setTimeout(() => {
-          setToast({ show: false, type: "", text: "" });
-          router.push('/dashboard');
-        }, 3000);
+        setTimeout(() => router.push('/dashboard'), 3000);
       } else {
         throw new Error(data.message || "Failed to create request");
       }
     } catch (err) {
-      setToast({ show: true, type: "error", text: err.message || "An unexpected error occurred." });
-    } finally {
+      toast.error(err.message || "An unexpected error occurred.");
+        } finally {
       setLoading(false);
     }
   };
@@ -112,23 +102,6 @@ export default function CreateDonationRequest() {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-red-600/5 rounded-full blur-[160px] -z-10" />
 
       {/* 📬 DaisyUI কাস্টম টোস্ট ফ্রেমওয়ার্ক (সবার উপরে পজিশন করা) */}
-      {toast.show && (
-        <div className="toast toast-top toast-end z-50 p-4 animate-in fade-in slide-in-from-top-5 duration-300">
-          <div className={`alert text-xs font-bold uppercase tracking-wider rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-white/10 text-white backdrop-blur-xl ${
-            toast.type === "success" ? "bg-emerald-600/90" : "bg-red-600/90"
-          }`}>
-            <div className="flex items-center gap-2">
-              {toast.type === "success" ? (
-                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-5 w-5" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              )}
-            <span>{toast.text}</span>
-          </div>
-        </div>
-        </div>
-      )}
-
       <div className="max-w-3xl mx-auto space-y-6 relative z-10">
         
         {/* Header Block */}
