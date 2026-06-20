@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { useRouter, notFound } from "next/navigation"; 
 import Link from "next/link";
 import { toast } from "react-toastify";
 import {
@@ -87,7 +87,16 @@ export default function DonorDashboard() {
   const [loadingDonations, setLoadingDonations] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [deletingId, setDeletingId] = useState(null);
-
+  useEffect(() => {
+    if (!isPending) {
+      if (!user) {
+        router.push("/login");
+      } else if (user.role !== "donor") {
+        // যদি ডোনার না হয়, সাথে সাথে not-found এ পাঠাবে
+        notFound();
+      }
+    }
+  }, [user, isPending, router]);
   useEffect(() => {
     if (!isPending && !user) { router.push("/login"); return; }
     if (!isPending && user?.email) {

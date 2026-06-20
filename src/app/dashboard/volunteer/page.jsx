@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { useRouter, notFound } from "next/navigation";
 import Link from "next/link";
 
 export default function VolunteerDashboard() {
@@ -12,28 +12,41 @@ export default function VolunteerDashboard() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // সব অথরাইজেশন এবং ডাটা ফেচিং লজিক একটি useEffect-এ
   useEffect(() => {
-    if (!isPending && (!user || (user.role !== "volunteer" && user.role !== "admin"))) {
-      router.push("/dashboard"); return;
-    }
-    if (!isPending && user) {
-      fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/all-requests/pending`, { credentials: "include" })
-        .then(r => r.json())
-        .then(d => { if (d.success) setRequests(d.data); })
-        .catch(console.error)
-        .finally(() => setLoading(false));
-    }
-  }, [user, isPending]);
+    if (isPending) return;
 
-  if (isPending) return (
-    <div className="flex items-center justify-center py-32">
-      <span className="loading loading-spinner loading-lg text-rose-500" />
-    </div>
-  );
+    // ১. ইউজার লগইন না থাকলে রিডাইরেক্ট
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    // ২. রোল চেক (অ্যাডমিন বা ভলান্টিয়ার না হলে notFound)
+    if (user.role !== "volunteer" && user.role !== "admin") {
+      notFound();
+      return;
+    }
+
+    // ৩. ডাটা ফেচিং
+    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/all-requests/pending`, { credentials: "include" })
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.success) setRequests(d.data);
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, [user, isPending, router]);
+
+  if (isPending)
+    return (
+      <div className="flex items-center justify-center py-32">
+        <span className="loading loading-spinner loading-lg text-rose-500" />
+      </div>
+    );
 
   return (
     <div className="space-y-6">
-
       {/* Banner */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c101f] to-[#12182e] border border-rose-500/20 p-6 shadow-xl">
         <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-rose-500 to-transparent" />
@@ -50,10 +63,10 @@ export default function VolunteerDashboard() {
       {/* Stats strip */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         {[
-          { label: "Pending Requests", value: requests.filter(r => r.status === "pending").length,    color: "yellow" },
-          { label: "In Progress",      value: requests.filter(r => r.status === "inprogress").length, color: "blue" },
-          { label: "Total Active",     value: requests.length,                                         color: "rose" },
-        ].map(s => (
+          { label: "Pending Requests", value: requests.filter((r) => r.status === "pending").length, color: "yellow" },
+          { label: "In Progress", value: requests.filter((r) => r.status === "inprogress").length, color: "blue" },
+          { label: "Total Active", value: requests.length, color: "rose" },
+        ].map((s) => (
           <div key={s.label} className="rounded-2xl bg-[#0c101f] border border-white/5 p-4 shadow-lg">
             <p className="text-xs text-slate-500 uppercase tracking-widest font-bold">{s.label}</p>
             <p className="text-3xl font-black text-white mt-1">{s.value}</p>
@@ -71,12 +84,14 @@ export default function VolunteerDashboard() {
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-12"><span className="loading loading-spinner text-rose-500" /></div>
+          <div className="flex justify-center py-12">
+            <span className="loading loading-spinner text-rose-500" />
+          </div>
         ) : requests.length === 0 ? (
           <div className="py-14 text-center text-slate-500 text-sm">No active requests at this moment.</div>
         ) : (
           <div className="divide-y divide-white/[0.04]">
-            {requests.map(req => (
+            {requests.map((req) => (
               <div key={req._id} className="flex items-center justify-between gap-4 px-5 py-4 hover:bg-white/[0.02] transition-all">
                 <div className="flex items-center gap-4 min-w-0">
                   <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400 font-black text-sm shrink-0">
