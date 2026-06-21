@@ -3,6 +3,8 @@
 import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import { districts, upazilas } from "@/data/locationData";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 const BG_GRADIENT = {
@@ -42,7 +44,7 @@ function RequestCard({ req }) {
         <span className="text-[10px] text-yellow-500 uppercase">{req.status}</span>
       </div>
       <h3 className="text-white font-bold">{req.patientName}</h3>
-      <p className="text-slate-400 text-xs text-sm">Hospital: {req.hospital}</p>
+      <p className="text-slate-400 text-xs">Hospital: {req.hospital}</p>
       <Link href={`/blood-donation-request/${req._id}`} className="mt-2 w-full py-2 bg-white/5 text-white rounded-lg text-center text-xs font-bold hover:bg-white/10">
         VIEW DETAILS
       </Link>
@@ -56,8 +58,6 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false);
   const [selectedBlood, setSelectedBlood] = useState("");
   const [selectedDistrictId, setSelectedDistrictId] = useState("");
-
-  // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
 
@@ -67,7 +67,6 @@ export default function SearchPage() {
       .then(d => d.success && setPendingRequests(d.data));
   }, []);
 
-  // Pagination calculations
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentRequests = pendingRequests.slice(indexOfFirstItem, indexOfLastItem);
@@ -95,11 +94,18 @@ export default function SearchPage() {
     finally { setLoading(false); }
   };
 
+  const downloadPDF = () => {
+    const doc = new jsPDF();
+    doc.text("Donor List", 14, 15);
+    const tableColumn = ["Name", "Blood Group", "District", "Upazila"];
+    const tableRows = donors.map(d => [d.name, d.bloodGroup, d.district, d.upazila]);
+    autoTable(doc, { head: [tableColumn], body: tableRows, startY: 20 });
+    doc.save("donors_list.pdf");
+  };
+
   return (
     <div className="min-h-screen bg-[#070a13] p-6 space-y-12">
-      {/* Search Form */}
       <form onSubmit={handleSearch} className="max-w-4xl mx-auto bg-[#0c101f] p-8 rounded-3xl border border-white/5 space-y-6">
-        {/* ... (আপনার আগের ফর্ম কোড) ... */}
         <div className="flex flex-wrap gap-2">
           {BLOOD_GROUPS.map(bg => (
             <button key={bg} type="button" onClick={() => setSelectedBlood(bg)} className={`px-4 py-2 rounded-xl text-xs font-bold ${selectedBlood === bg ? "bg-red-600 text-white" : "bg-white/5 text-slate-400"}`}>
@@ -117,22 +123,26 @@ export default function SearchPage() {
             {filteredUpazilas.map(u => <option key={u.id} value={u.name}>{u.name}</option>)}
           </select>
         </div>
-        <button type="submit" className="w-full py-4 bg-red-600 text-white rounded-xl font-bold">SEARCH DONORS</button>
+        <button type="submit" className="w-full py-4 bg-red-600 text-white rounded-xl font-bold uppercase">Search Donors</button>
       </form>
 
-      {/* Donor Results */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-        {loading ? <p className="text-white text-center col-span-3">Searching...</p> : donors.map(d => <DonorCard key={d._id} donor={d} />)}
+      <div className="max-w-6xl mx-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-bold text-white">Donor Results</h2>
+          {donors.length > 0 && (
+            <button onClick={downloadPDF} className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold uppercase transition-all">Download PDF</button>
+          )}
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {loading ? <p className="text-white">Searching...</p> : donors.map(d => <DonorCard key={d._id} donor={d} />)}
+        </div>
       </div>
 
-      {/* Pending Requests with Pagination */}
       <div className="max-w-6xl mx-auto">
         <h2 className="text-2xl font-bold text-white mb-6">Pending Requests</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {currentRequests.map(req => <RequestCard key={req._id} req={req} />)}
         </div>
-
-        {/* Pagination Buttons */}
         {totalPages > 1 && (
           <div className="flex justify-center gap-4 mt-10">
             <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)} className="px-4 py-2 bg-white/5 rounded-lg text-white disabled:opacity-30">Prev</button>
