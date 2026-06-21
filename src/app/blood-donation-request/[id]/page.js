@@ -3,22 +3,23 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
-import { 
-  ArrowLeft, MapPin, Hospital, CalendarClock, 
-  Phone, ShieldCheck, Droplet, AlertTriangle 
+import {
+  ArrowLeft, MapPin, Hospital, CalendarClock,
+  Phone, ShieldCheck, Droplet, AlertTriangle
 } from 'lucide-react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function RequestDetailsPage() {
   const { id } = useParams();
   const router = useRouter();
   const { data: session, isPending: isAuthPending } = authClient.useSession();
   const user = session?.user;
-  
+
   const [request, setRequest] = useState(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
 
-  // রিকোয়েস্ট ডিটেইলস ফেচ করা
   useEffect(() => {
     if (!id) return;
     const fetchRequestDetails = async () => {
@@ -35,33 +36,34 @@ export default function RequestDetailsPage() {
     fetchRequestDetails();
   }, [id]);
 
-  // ডোনেশন কনফার্ম করার লজিক
   const handleConfirmDonation = async (e) => {
     e.preventDefault();
-    if (!user) { alert("Please log in to donate!"); return; }
-    
+    if (!user) { toast.error("Please log in to donate!"); return; }
+
     setUpdating(true);
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/posts/blood-request/${id}/status`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           status: "inprogress",
           donorName: user.name,
           donorEmail: user.email
         }),
       });
-      
+
       const result = await res.json();
       if (result.success) {
         document.getElementById('donation_confirm_modal').close();
-        alert("Success! You are now the donor for this request.");
-        router.push("/dashboard"); // ডোনেশন কনফার্ম হলে ড্যাশবোর্ডে নিয়ে যাবে
+        toast.success("Success! You are now the donor for this request.");
+        setTimeout(() => router.push("/dashboard"), 2000);
       } else {
-        alert(result.message || "Update failed!");
+        toast.error(result.message || "Update failed!");
       }
-    } catch (err) { console.error(err); }
-    finally { setUpdating(false); }
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong. Please try again.");
+    } finally { setUpdating(false); }
   };
 
   if (loading || isAuthPending) return (
@@ -79,6 +81,8 @@ export default function RequestDetailsPage() {
 
   return (
     <div className="min-h-screen bg-[#070a13] text-white p-6 sm:p-12">
+      <ToastContainer position="top-right" theme="dark" autoClose={3000} />
+
       <div className="max-w-3xl mx-auto space-y-8">
         <button onClick={() => router.back()} className="flex items-center gap-2 text-slate-400 hover:text-red-500 transition-colors">
           <ArrowLeft size={18} /> <span className="font-bold tracking-widest text-xs uppercase">Back to List</span>
@@ -105,7 +109,7 @@ export default function RequestDetailsPage() {
             <InfoCard icon={<Phone size={20}/>} label="Contact" value={request.contactNumber} />
           </div>
 
-          <button 
+          <button
             onClick={() => document.getElementById('donation_confirm_modal').showModal()}
             className="mt-8 w-full py-4 bg-red-600 hover:bg-red-700 rounded-2xl font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all"
           >
@@ -118,11 +122,11 @@ export default function RequestDetailsPage() {
         <div className="modal-box bg-[#0c101f] border border-white/10 rounded-3xl p-8">
           <h3 className="text-xl font-black uppercase text-red-500">Confirm Donation</h3>
           <p className="text-slate-400 text-sm mt-2 mb-6">Are you sure you want to donate blood for this patient?</p>
-          
+
           <form onSubmit={handleConfirmDonation} className="space-y-4">
             <input type="text" value={user?.name || "Anonymous"} readOnly className="w-full bg-white/5 p-3 rounded-xl border border-white/10" />
             <input type="text" value={user?.email || "No Email"} readOnly className="w-full bg-white/5 p-3 rounded-xl border border-white/10" />
-            
+
             <div className="flex gap-3 mt-6">
               <button type="button" onClick={() => document.getElementById('donation_confirm_modal').close()} className="flex-1 py-3 bg-white/10 rounded-xl font-bold">Cancel</button>
               <button type="submit" disabled={updating} className="flex-1 py-3 bg-red-600 rounded-xl font-bold">

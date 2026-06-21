@@ -117,11 +117,11 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function PendingRequests() {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
-  
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 9;
 
@@ -131,7 +131,6 @@ export default function PendingRequests() {
         cache: 'no-store',
         next: { revalidate: 0 }
       });
-      
       const data = await res.json();
       if (data.success) {
         setRequests(data.data);
@@ -145,18 +144,28 @@ export default function PendingRequests() {
 
   useEffect(() => {
     fetchPendingRequests();
-
-    // প্রতি ৮ সেকেন্ড পর পর অটো রিফ্রেশ (Donate করলে দ্রুত সরে যাবে)
     const interval = setInterval(fetchPendingRequests, 8000);
-
     return () => clearInterval(interval);
   }, []);
 
-  // Pagination Logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentRequests = requests.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(requests.length / itemsPerPage);
+
+  // Animation Variants
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.4 } }
+  };
 
   return (
     <section className="max-w-6xl mx-auto px-4 pb-20">
@@ -177,10 +186,20 @@ export default function PendingRequests() {
           <span className="loading loading-spinner loading-lg text-red-500"></span>
         </div>
       ) : requests.length > 0 ? (
-        <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div 
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          <AnimatePresence mode="popLayout">
             {currentRequests.map((req) => (
-              <div key={req._id} className="backdrop-blur-xl bg-[#0c101f]/60 border border-white/5 p-6 rounded-3xl hover:border-red-500/30 transition-all duration-300 group shadow-xl relative overflow-hidden">
+              <motion.div 
+                key={req._id}
+                variants={item}
+                layout
+                className="backdrop-blur-xl bg-[#0c101f]/60 border border-white/5 p-6 rounded-3xl hover:border-red-500/30 transition-colors duration-300 group shadow-xl relative overflow-hidden"
+              >
                 <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-red-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 
                 <div className="flex justify-between items-start mb-4">
@@ -192,43 +211,45 @@ export default function PendingRequests() {
                   </span>
                 </div>
 
-                <h3 className="text-lg font-bold text-white">{req.patientName}</h3>
-                <div className="mt-4 space-y-2 text-sm text-slate-400">
+                <h3 className="text-lg font-bold text-white mb-4">{req.patientName}</h3>
+                <div className="space-y-2 text-sm text-slate-400">
                   <p>Hospital: <span className="text-slate-300">{req.hospital}</span></p>
                   <p>Location: <span className="text-slate-300">{req.upazila}, {req.district}</span></p>
                   <p>Date: <span className="text-slate-300">{req.dateNeeded}</span></p>
                 </div>
 
                 <div className="mt-6">
-                  <Link href={`/blood-donation-request/${req._id}`} className="btn btn-sm w-full bg-white/5 border border-white/10 text-white rounded-xl hover:bg-red-600 transition-all font-bold uppercase text-xs">
+                  <Link href={`/blood-donation-request/${req._id}`} className="block text-center py-2 bg-white/5 border border-white/10 text-white rounded-xl hover:bg-red-600 transition-all font-bold uppercase text-xs">
                     View Details
                   </Link>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
-
-          <div className="flex justify-center gap-2 mt-12">
-            <button 
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage(prev => prev - 1)}
-              className="px-4 py-2 bg-white/5 rounded-lg text-white disabled:opacity-30 hover:bg-white/10"
-            >
-              Prev
-            </button>
-            <span className="px-4 py-2 text-white font-bold">{currentPage} / {totalPages}</span>
-            <button 
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage(prev => prev + 1)}
-              className="px-4 py-2 bg-white/5 rounded-lg text-white disabled:opacity-30 hover:bg-white/10"
-            >
-              Next
-            </button>
-          </div>
-        </>
+          </AnimatePresence>
+        </motion.div>
       ) : (
         <div className="text-center py-20 bg-white/[0.01] border border-dashed border-white/5 rounded-3xl">
           <p className="text-slate-500 text-sm">No emergency requests active.</p>
+        </div>
+      )}
+
+      {totalPages > 1 && (
+        <div className="flex justify-center gap-4 mt-12">
+          <button 
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage(prev => prev - 1)}
+            className="px-6 py-2 bg-white/5 border border-white/10 rounded-xl text-white disabled:opacity-30 hover:bg-white/10 transition-all"
+          >
+            Prev
+          </button>
+          <span className="flex items-center text-white font-bold">{currentPage} / {totalPages}</span>
+          <button 
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage(prev => prev + 1)}
+            className="px-6 py-2 bg-white/5 border border-white/10 rounded-xl text-white disabled:opacity-30 hover:bg-white/10 transition-all"
+          >
+            Next
+          </button>
         </div>
       )}
     </section>
