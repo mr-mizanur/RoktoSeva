@@ -249,7 +249,7 @@
 
 import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
-import { useRouter, notFound } from "next/navigation"; 
+import { notFound } from "next/navigation";
 import { Users, Droplets, Wallet, ShieldCheck, ClipboardList } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
@@ -257,29 +257,39 @@ export default function AdminDashboard() {
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
 
-  const [stats, setStats] = useState({ totalUsers: 0, totalRequests: 0, totalFunding: 0 });
+  const [stats, setStats] = useState({ totalUsers: 0, totalRequests: 0 });
+  const [stripeBalance, setStripeBalance] = useState({ available: 0, pending: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (isPending) return; 
+    if (isPending) return;
 
     if (!user || user.role !== "admin") {
-      notFound(); 
+      notFound();
       return;
     }
 
-    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/stats`, { credentials: "include" })
-      .then((r) => r.json())
-      .then((d) => {
-        const data = d.stats || d;
-        setStats({
-          totalUsers: data.totalUsers || 0,
-          totalRequests: data.totalRequests || 0,
-          totalFunding: data.totalFunding || 0,
-        });
-      })
-      .catch((err) => console.error("Fetch Error:", err))
-      .finally(() => setLoading(false));
+    Promise.all([
+      fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/stats`, { credentials: "include" })
+        .then((r) => r.json())
+        .then((d) => {
+          const data = d.stats || d;
+          setStats({
+            totalUsers: data.totalUsers || 0,
+            totalRequests: data.totalRequests || 0,
+          });
+        })
+        .catch((err) => console.error("Stats Fetch Error:", err)),
+
+      fetch("/api/admin/stripe-balance")
+        .then((r) => r.json())
+        .then((d) => {
+          if (!d.error) {
+            setStripeBalance({ available: d.available ?? 0, pending: d.pending ?? 0 });
+          }
+        })
+        .catch((err) => console.error("Stripe Balance Error:", err)),
+    ]).finally(() => setLoading(false));
   }, [user, isPending]);
 
   if (isPending || loading) {
@@ -298,20 +308,22 @@ export default function AdminDashboard() {
   const cards = [
     { label: "Total Users", value: stats.totalUsers, icon: <Users size={20} />, color: "purple" },
     { label: "Total Requests", value: stats.totalRequests, icon: <Droplets size={20} />, color: "red" },
-    { label: "Total Funding", value: formatCurrency(stats.totalFunding), icon: <Wallet size={20} />, color: "emerald" },
+    { label: "Stripe Available", value: formatCurrency(stripeBalance.available / 100), icon: <Wallet size={20} />, color: "emerald" },
+    { label: "Stripe Pending", value: formatCurrency(stripeBalance.pending / 100), icon: <Wallet size={20} />, color: "yellow" },
   ];
 
-  // Chart Data Preparation
   const chartData = [
     { name: 'Users', count: stats.totalUsers, color: "#a855f7" },
     { name: 'Requests', count: stats.totalRequests, color: "#ef4444" },
-    { name: 'Funding', count: stats.totalFunding / 10, color: "#10b981" }, // Simplified scaling
+    { name: 'Available', count: stripeBalance.available / 100, color: "#10b981" },
+    { name: 'Pending', count: stripeBalance.pending / 100, color: "#eab308" },
   ];
 
   const colorMap = {
     purple: "border-purple-500/20 text-purple-400 bg-purple-500/10",
     red: "border-red-500/20 text-red-400 bg-red-500/10",
     emerald: "border-emerald-500/20 text-emerald-400 bg-emerald-500/10",
+    yellow: "border-yellow-500/20 text-yellow-400 bg-yellow-500/10",
   };
 
   return (
@@ -323,7 +335,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {cards.map((c) => (
           <div key={c.label} className={`rounded-2xl bg-[#0c101f] border p-5 shadow-xl ${colorMap[c.color].split(" ")[0]}`}>
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 border ${colorMap[c.color]}`}>
@@ -369,3 +381,5 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
+
