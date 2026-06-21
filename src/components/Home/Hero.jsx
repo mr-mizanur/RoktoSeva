@@ -10,6 +10,7 @@ const Hero = () => {
     livesImpacted: 0,
     pendingRequests: 0
   });
+  const [totalFunding, setTotalFunding] = useState(null);
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/stats`)
@@ -24,6 +25,15 @@ const Hero = () => {
         }
       })
       .catch(err => console.error("Error fetching stats:", err));
+
+    fetch('/api/admin/stripe-balance')
+      .then(res => res.json())
+      .then(data => {
+        if (data.pending !== undefined) {
+          setTotalFunding((data.pending / 100).toFixed(0));
+        }
+      })
+      .catch(err => console.error("Error fetching stripe balance:", err));
   }, []);
 
 
@@ -84,6 +94,9 @@ const Hero = () => {
           <Link href="/search" className="px-8 py-4 bg-white/5 text-white border border-white/10 font-medium rounded-lg hover:bg-white/10 transition-all backdrop-blur-sm">
             Request Blood
           </Link>
+          <Link href="/dashboard/funding" className="px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all active:scale-95">
+            Donate Now
+          </Link>
         </motion.div>
 
       
@@ -97,7 +110,9 @@ const Hero = () => {
             <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-1">Pending Requests</div>
           </div>
           <div>
-            <div className="text-2xl md:text-3xl font-bold text-white">$50K+</div>
+            <div className="text-2xl md:text-3xl font-bold text-white">
+              {totalFunding !== null ? `$${Number(totalFunding).toLocaleString()}` : '$0'}
+            </div>
             <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-1">Total Funding</div>
           </div>
         </motion.div>
