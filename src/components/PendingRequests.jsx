@@ -111,6 +111,9 @@
 //  );
 //}
 
+
+
+
 "use client";
 
 import React, { useEffect, useState, useMemo } from 'react';
@@ -151,7 +154,7 @@ export default function PendingRequests() {
     return () => clearInterval(interval);
   }, []);
 
-  
+
   const filteredRequests = useMemo(() => {
     return requests.filter(req => {
       const matchBlood = selectedBlood === "All" || req.bloodGroup === selectedBlood;
@@ -160,15 +163,16 @@ export default function PendingRequests() {
     });
   }, [requests, selectedBlood, selectedDistrict]);
 
- 
+  
   const districts = useMemo(() => ["All", ...new Set(requests.map(r => r.district))], [requests]);
 
+ 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentRequests = filteredRequests.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
 
- 
+
   useEffect(() => { setCurrentPage(1); }, [selectedBlood, selectedDistrict]);
 
   return (
@@ -180,7 +184,7 @@ export default function PendingRequests() {
           </h2>
         </div>
 
-       
+     
         <div className="flex gap-3">
           <select 
             className="bg-[#0c101f] border border-white/10 text-white text-xs p-2 rounded-xl outline-none"
@@ -204,36 +208,59 @@ export default function PendingRequests() {
           <span className="loading loading-spinner loading-lg text-red-500"></span>
         </div>
       ) : filteredRequests.length > 0 ? (
-        <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <AnimatePresence mode="popLayout">
-            {currentRequests.map((req) => (
-              <motion.div 
-                key={req._id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                className="backdrop-blur-xl bg-[#0c101f]/60 border border-white/5 p-6 rounded-3xl hover:border-red-500/30 transition-colors duration-300"
-              >
-                <div className="flex justify-between items-start mb-4">
-                  <div className="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-500 font-black text-xl">
-                    {req.bloodGroup}
+        <>
+          <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <AnimatePresence mode="popLayout">
+              {currentRequests.map((req) => (
+                <motion.div 
+                  key={req._id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="backdrop-blur-xl bg-[#0c101f]/60 border border-white/5 p-6 rounded-3xl hover:border-red-500/30 transition-colors duration-300"
+                >
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-500 font-black text-xl">
+                      {req.bloodGroup}
+                    </div>
+                    <span className="text-[10px] uppercase font-bold text-yellow-500 bg-yellow-500/10 px-2 py-1 rounded border border-yellow-500/20">
+                      {req.status}
+                    </span>
                   </div>
-                  <span className="text-[10px] uppercase font-bold text-yellow-500 bg-yellow-500/10 px-2 py-1 rounded border border-yellow-500/20">
-                    {req.status}
-                  </span>
-                </div>
-                <h3 className="text-lg font-bold text-white mb-4">{req.patientName}</h3>
-                <div className="space-y-2 text-sm text-slate-400">
-                  <p>Hospital: <span className="text-slate-300">{req.hospital}</span></p>
-                  <p>Location: <span className="text-slate-300">{req.upazila}, {req.district}</span></p>
-                </div>
-                <Link href={`/blood-donation-request/${req._id}`} className="block text-center mt-6 py-2 bg-white/5 border border-white/10 text-white rounded-xl hover:bg-red-600 transition-all font-bold uppercase text-xs">
-                  View Details
-                </Link>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+                  <h3 className="text-lg font-bold text-white mb-4">{req.patientName}</h3>
+                  <div className="space-y-2 text-sm text-slate-400">
+                    <p>Hospital: <span className="text-slate-300">{req.hospital}</span></p>
+                    <p>Location: <span className="text-slate-300">{req.upazila}, {req.district}</span></p>
+                  </div>
+                  <Link href={`/blood-donation-request/${req._id}`} className="block text-center mt-6 py-2 bg-white/5 border border-white/10 text-white rounded-xl hover:bg-red-600 transition-all font-bold uppercase text-xs">
+                    View Details
+                  </Link>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+
+        
+          {totalPages > 1 && (
+            <div className="flex justify-center gap-4 mt-12">
+              <button 
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(prev => prev - 1)}
+                className="px-6 py-2 bg-white/5 border border-white/10 rounded-xl text-white disabled:opacity-30 hover:bg-white/10 transition-all"
+              >
+                Prev
+              </button>
+              <span className="flex items-center text-white font-bold">{currentPage} / {totalPages}</span>
+              <button 
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage(prev => prev + 1)}
+                className="px-6 py-2 bg-white/5 border border-white/10 rounded-xl text-white disabled:opacity-30 hover:bg-white/10 transition-all"
+              >
+                Next
+              </button>
+            </div>
+          )}
+        </>
       ) : (
         <div className="text-center py-20 text-slate-500">No requests found matching your filters.</div>
       )}
