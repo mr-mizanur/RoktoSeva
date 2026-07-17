@@ -5,7 +5,7 @@ import FAQPreview from "@/components/Home/FAQPreview";
 import ContactSection from "@/components/ContactSection";
 
 export const metadata = {
-  title: "Home",
+  title: "Home - RoktoSeva | Blood Donation Platform Bangladesh",
   description:
     "Find blood donors near you across Bangladesh. Browse emergency blood requests, register as a donor, and help save lives with RoktoSeva.",
   alternates: {
