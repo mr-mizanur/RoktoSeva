@@ -32,9 +32,9 @@
 
 | Role | Demo Email | Demo Password |
 |------|-----------|---------------|
-| Admin | admin@roktoseva.com | `admin123` |
-| Donor | donor@roktoseva.com | `donor123` |
-| Volunteer | volunteer@roktoseva.com | `vol123` |
+| Admin |... |
+| Donor |... |
+| Volunteer |... |
 
 ---
 
@@ -292,7 +292,7 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 <div align="center">
 
-Built with purpose for Bangladesh 🇧🇩
+Built with purpose for Bangladesh 
 
 **[RoktoSeva](https://rokto-seva.vercel.app)** — because every drop matters.
 
