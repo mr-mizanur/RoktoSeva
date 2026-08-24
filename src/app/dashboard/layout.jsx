@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import Logo from "@/components/Logo";
 
 const donorNav = [
   { href: "/dashboard/donor", label: "Overview", icon: (
@@ -30,7 +31,6 @@ const adminNav = [
   { href: "/dashboard/admin/requests", label: "All Requests", icon: (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
   )},
-
   { href: "/dashboard/profile", label: "Profile", icon: (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
   )},
@@ -77,20 +77,12 @@ export default function DashboardLayout({ children }) {
 
   const Sidebar = () => (
     <aside className="flex flex-col h-full bg-[#0a0d1a] border-r border-white/5">
-      {/* Logo */}
-      <div className="px-5 py-5 border-b border-white/5 flex items-center gap-3">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-red-600 to-rose-700 flex items-center justify-center shadow-[0_0_20px_rgba(220,38,38,0.4)] shrink-0">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
-            <path d="M12 2C9 6 5 10 5 14C5 18.4 8.1 22 12 22C15.9 22 19 18.4 19 14C19 10 15 6 12 2Z" fill="white"/>
-            <ellipse cx="10" cy="11" rx="1.5" ry="2.5" fill="white" fillOpacity="0.4"/>
-          </svg>
-        </div>
-        <div>
-          <p className="text-sm font-black text-white uppercase tracking-widest leading-none">Rokto<span className="text-red-500">Seva</span></p>
-          <p className="text-[10px] text-slate-500 uppercase tracking-wider mt-0.5">Dashboard</p>
-        </div>
+      {/* Logo container with proper padding and sizing for sidebar */}
+      <div className="p-4 border-b border-white/5">
+        <Link href="/" className="inline-block">
+          <Logo size={32} textClass="text-sm" />
+        </Link>
       </div>
-
      
       <div className="px-4 py-3 border-b border-white/5">
         <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md border ${ac.badge}`}>
@@ -98,7 +90,6 @@ export default function DashboardLayout({ children }) {
         </span>
       </div>
 
-     
       <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
         {config.nav.map((item) => {
           const isActive = pathname === item.href;
@@ -121,7 +112,6 @@ export default function DashboardLayout({ children }) {
         })}
       </nav>
 
-      
       <div className="border-t border-white/5 p-4 space-y-3">
         <div className="flex items-center gap-3">
           <img
@@ -157,13 +147,10 @@ export default function DashboardLayout({ children }) {
 
   return (
     <div className="min-h-screen bg-[#070a13] flex">
-
-      
       <div className="hidden md:flex md:w-60 md:flex-col md:fixed md:inset-y-0 md:top-0 z-30">
         <Sidebar />
       </div>
 
-      {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <>
           <div
@@ -176,13 +163,9 @@ export default function DashboardLayout({ children }) {
         </>
       )}
 
-    
       <div className="flex-1 flex flex-col md:ml-60">
-
-     
         <header className="sticky top-0 z-20 bg-[#070a13]/80 backdrop-blur-xl border-b border-white/5 px-4 sm:px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            {/* Mobile hamburger */}
             <button
               className="md:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-all"
               onClick={() => setSidebarOpen(true)}
@@ -217,7 +200,6 @@ export default function DashboardLayout({ children }) {
           </div>
         </header>
 
-      
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
           {children}
         </main>
