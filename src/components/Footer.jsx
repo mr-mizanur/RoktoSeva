@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Logo from './Logo'
 
 const Footer = () => {
   return (
@@ -6,18 +7,10 @@ const Footer = () => {
       <div className="absolute top-0 left-1/4 h-[1px] w-1/2 bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_20px_#ef4444]" />
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8">
-        {/* Brand */}
+       
         <div className="flex flex-col gap-3">
           <Link href="/" className="flex items-center gap-3 group w-fit">
-            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 via-rose-600 to-red-700 shadow-[0_0_25px_rgba(220,38,38,0.5)] transition-all duration-500 group-hover:rotate-[360deg]">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5">
-                <path d="M12 2C9 6 5 10 5 14C5 18.4 8.1 22 12 22C15.9 22 19 18.4 19 14C19 10 15 6 12 2Z" fill="white"/>
-                <ellipse cx="10" cy="11" rx="1.5" ry="2.5" fill="white" fillOpacity="0.4"/>
-              </svg>
-            </div>
-            <span className="text-lg font-black bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent uppercase tracking-widest">
-              Rokto<span className="text-red-500 font-black drop-shadow-[0_0_15px_rgba(239,68,68,0.6)]">Seva</span>
-            </span>
+           <Logo/>
           </Link>
           <p className="text-sm leading-relaxed text-slate-500 max-w-xs">
             Bridging the gap between blood donors and recipients across Bangladesh through fast, decentralized coordination.
@@ -36,7 +29,7 @@ const Footer = () => {
           <Link href="/contact" className="text-sm hover:text-white transition-colors duration-200">Contact Us</Link>
         </div>
 
-        {/* Contact */}
+       
         <div className="flex flex-col gap-3">
           <h3 className="text-xs font-bold uppercase tracking-widest text-white">Contact</h3>
           <a href="mailto:support@roktoseva.com" className="text-sm hover:text-white transition-colors duration-200">support@roktoseva.com</a>

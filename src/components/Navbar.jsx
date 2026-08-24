@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
 import { toast } from 'react-toastify';
+import Logo from './Logo';
+
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -63,15 +65,11 @@ const Navbar = () => {
 
   
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-red-600 via-rose-600 to-red-700 shadow-[0_0_25px_rgba(220,38,38,0.5)] transition-all duration-500 group-hover:rotate-[360deg]">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 sm:w-6 sm:h-6">
-                <path d="M12 2C9 6 5 10 5 14C5 18.4 8.1 22 12 22C15.9 22 19 18.4 19 14C19 10 15 6 12 2Z" fill="white"/>
-                <ellipse cx="10" cy="11" rx="1.5" ry="2.5" fill="white" fillOpacity="0.4"/>
-              </svg>
-            </div>
-            <span className="text-lg sm:text-xl font-black bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent uppercase tracking-widest">
-              Rokto<span className="text-red-500 font-black drop-shadow-[0_0_15px_rgba(239,68,68,0.6)]">Seva</span>
-            </span>
+           
+
+         <Logo/>
+
+
           </Link>
         </div>
 
