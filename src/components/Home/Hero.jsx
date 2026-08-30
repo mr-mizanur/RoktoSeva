@@ -100,7 +100,7 @@ const Hero = () => {
         </motion.div>
 
       
-        <motion.div variants={itemVariants} className="mt-20 pt-10 border-t border-white/10 grid grid-cols-3 gap-8 max-w-2xl mx-auto">
+        <motion.div variants={itemVariants} className="mt-20 pt-10 border-t border-white/10 grid grid-cols-3 gap-8 max-w-2xl mx-auto m-6">
           <div>
             <div className="text-2xl md:text-3xl font-bold text-white">{stats.activeDonors}+</div>
             <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-1">Active Donors</div>

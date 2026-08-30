@@ -77,22 +77,23 @@ export default function ContactSection() {
       return;
     }
     setLoading(true);
-    // Simulate sending — replace with real email API call here
     await new Promise((r) => setTimeout(r, 1400));
     setLoading(false);
     setSent(true);
   };
 
   return (
-    <section className="relative min-h-screen bg-[#070a13] text-white py-20 px-4 sm:px-8 overflow-hidden">
-      {/* Background glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-red-600/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-rose-900/5 rounded-full blur-[100px] -z-10 pointer-events-none" />
+    <section className="relative bg-[#070a13] text-white py-20 px-4 sm:px-8 overflow-hidden">
+      {/* Top separator line matching other sections */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-red-500/20 to-transparent" />
+      
+      {/* Background glows matching guidelines & faq */}
+      <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-red-600/4 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 mb-5">
+        {/* Header (Left-aligned matching Guidelines) */}
+        <div className="mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 mb-4">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
@@ -101,13 +102,13 @@ export default function ContactSection() {
               We're Here to Help
             </span>
           </div>
-          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tighter mb-4 leading-tight">
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tighter leading-tight mb-3">
             Get in{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-rose-600">
               Touch
             </span>
-          </h1>
-          <p className="text-slate-400 text-lg max-w-xl mx-auto font-light leading-relaxed">
+          </h2>
+          <p className="text-slate-400 text-base max-w-md font-light leading-relaxed">
             Have a question, emergency, or just want to connect? Our team is available around the clock.
           </p>
         </div>

@@ -30,10 +30,10 @@ function FAQItem({ q, a, isOpen, onToggle }) {
   return (
     <div
       className={`group relative backdrop-blur-xl bg-[#0c101f]/60 border rounded-2xl overflow-hidden transition-all duration-300 ${
-        isOpen ? "border-red-500/30 shadow-[0_0_20px_rgba(220,38,38,0.07)]" : "border-white/5 hover:border-white/10"
+        isOpen ? "border-red-500/20 bg-[#0c101f]/80" : "border-white/5 hover:border-red-500/20 hover:bg-[#0c101f]/80"
       }`}
     >
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-red-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-red-500/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       <button
         onClick={onToggle}
         className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left"
@@ -59,25 +59,40 @@ export default function FAQPreview() {
 
   return (
     <section className="relative bg-[#070a13] py-20 px-4 sm:px-8 overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-red-600/5 rounded-full blur-[100px] pointer-events-none" />
+      {/* Top and background glow matching Guidelines section */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-red-500/20 to-transparent" />
+      <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-red-600/4 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 mb-4">
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400">Common Questions</span>
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 mb-4">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400">Common Questions</span>
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tighter leading-tight">
+              Frequently Asked{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-rose-600">
+                Questions
+              </span>
+            </h2>
+            <p className="text-slate-400 text-base mt-3 max-w-md font-light leading-relaxed">
+              Quick answers to the questions we hear most.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tighter mb-3">
-            Frequently Asked{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-rose-600">Questions</span>
-          </h2>
-          <p className="text-slate-400 text-base max-w-md mx-auto font-light">
-            Quick answers to the questions we hear most.
-          </p>
+          <Link
+            href="/faq"
+            className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 border border-red-500/30 text-red-400 font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-red-500/10 transition-all duration-300 self-start sm:self-auto"
+          >
+            View All FAQs
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </Link>
         </div>
 
         {/* FAQ accordion */}
-        <div className="flex flex-col gap-3 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {previewFAQs.map((item, idx) => (
             <FAQItem
               key={idx}
@@ -87,19 +102,6 @@ export default function FAQPreview() {
               onToggle={() => setOpenIndex(openIndex === idx ? null : idx)}
             />
           ))}
-        </div>
-
-        {/* CTA */}
-        <div className="text-center">
-          <Link
-            href="/faq"
-            className="inline-flex items-center gap-2 px-6 py-3 border border-red-500/30 text-red-400 font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-red-500/10 transition-all duration-300"
-          >
-            View All FAQs
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-            </svg>
-          </Link>
         </div>
       </div>
     </section>

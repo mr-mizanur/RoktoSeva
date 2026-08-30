@@ -325,13 +325,13 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c101f] to-[#12182e] border border-purple-500/20 p-6 shadow-xl">
         <h1 className="text-2xl sm:text-3xl font-black text-white">System Core Root</h1>
         <p className="text-slate-400 text-sm">Full architectural control over RoktoSeva.</p>
       </div>
 
-      {/* Stats Cards */}
+  
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {cards.map((c) => (
           <div key={c.label} className={`rounded-2xl bg-[#0c101f] border p-5 shadow-xl ${colorMap[c.color].split(" ")[0]}`}>
@@ -344,7 +344,7 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      {/* Chart Section */}
+     
       <div className="bg-[#0c101f] border border-white/5 p-6 rounded-2xl shadow-xl">
         <h3 className="text-white font-bold mb-6">Overview Statistics</h3>
         <div className="h-[300px] w-full">
@@ -364,7 +364,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Links */}
+  
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <a href="/dashboard/admin/all-users" className="rounded-2xl bg-[#0c101f] border border-white/5 p-5 hover:border-purple-500/30 transition-all">
           <ShieldCheck className="text-purple-400 mb-2" />
