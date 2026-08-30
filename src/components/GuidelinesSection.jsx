@@ -80,18 +80,15 @@ function SectionHeader({ badge, title, highlight, subtitle }) {
 export default function GuidelinesSection() {
   return (
     <section className="relative min-h-screen bg-[#070a13] text-white py-20 px-4 sm:px-8 overflow-hidden">
-      {/* Background glows */}
+      
       <div className="absolute top-1/4 right-0 w-[400px] h-[400px] bg-red-600/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
       <div className="absolute bottom-1/4 left-0 w-[350px] h-[350px] bg-rose-900/5 rounded-full blur-[100px] -z-10 pointer-events-none" />
 
       <div className="max-w-6xl mx-auto">
-        {/* Page header */}
+        
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 mb-5">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
-            </span>
+           
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400">
               Save Lives Safely
             </span>
@@ -107,7 +104,6 @@ export default function GuidelinesSection() {
           </p>
         </div>
 
-        {/* Before donating */}
         <div className="mb-16">
           <SectionHeader
             badge="Step 01"
@@ -120,7 +116,7 @@ export default function GuidelinesSection() {
           </div>
         </div>
 
-        {/* During donation */}
+   
         <div className="mb-16">
           <SectionHeader
             badge="Step 02"
@@ -133,7 +129,7 @@ export default function GuidelinesSection() {
           </div>
         </div>
 
-        {/* After donating */}
+        
         <div className="mb-16">
           <SectionHeader
             badge="Step 03"
@@ -146,7 +142,7 @@ export default function GuidelinesSection() {
           </div>
         </div>
 
-        {/* Eligibility */}
+        
         <div className="mb-16">
           <SectionHeader
             badge="Eligibility"
@@ -170,7 +166,7 @@ export default function GuidelinesSection() {
           </div>
         </div>
 
-        {/* Blood group compatibility */}
+        
         <div className="mb-16">
           <SectionHeader
             badge="Compatibility"
@@ -226,7 +222,7 @@ export default function GuidelinesSection() {
           </p>
         </div>
 
-        {/* CTA */}
+       
         <div className="relative backdrop-blur-xl bg-[#0c101f]/60 border border-white/5 rounded-3xl p-8 sm:p-10 text-center overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_15px_#ef4444]" />
           <div className="absolute inset-0 bg-gradient-to-b from-red-500/[0.04] to-transparent pointer-events-none rounded-3xl" />

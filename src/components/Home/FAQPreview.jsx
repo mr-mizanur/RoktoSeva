@@ -59,17 +59,13 @@ export default function FAQPreview() {
 
   return (
     <section className="relative bg-[#070a13] py-20 px-4 sm:px-8 overflow-hidden">
-      {/* Top and background glow matching Guidelines section */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-red-500/20 to-transparent" />
       <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-red-600/4 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 mb-4">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400">Common Questions</span>
-            </div>
+           
             <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tighter leading-tight">
               Frequently Asked{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-rose-600">
@@ -91,7 +87,6 @@ export default function FAQPreview() {
           </Link>
         </div>
 
-        {/* FAQ accordion */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {previewFAQs.map((item, idx) => (
             <FAQItem

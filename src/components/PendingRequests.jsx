@@ -56,32 +56,20 @@ export default function PendingRequests() {
 
   return (
     <section className="relative bg-[#070a13] text-white py-20 px-4 sm:px-8 overflow-hidden">
-      {/* Top separator line matching other sections */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-red-500/20 to-transparent" />
       
-      {/* Background glow matching design system */}
       <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-red-600/4 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto">
-        {/* Header (Left-aligned matching Guidelines/Contact) */}
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 border-b border-white/5 pb-6 gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 mb-4">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
-              </span>
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400">
-                Live Feed
-              </span>
-            </div>
+           
             <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tighter leading-tight mb-2">
               All Pending <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-rose-600">Requests</span>
             </h2>
             <p className="text-slate-400 text-xs mt-1">Showing page {currentPage} of {totalPages || 1} ({filteredRequests.length} total results)</p>
           </div>
 
-          {/* Filters & Total Badge */}
           <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
             <select 
               className="bg-[#0c101f] border border-white/10 text-white text-xs px-3 py-2.5 rounded-xl outline-none focus:border-red-500/50 cursor-pointer"

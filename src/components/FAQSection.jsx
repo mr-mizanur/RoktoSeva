@@ -148,14 +148,14 @@ function FAQItem({ q, a, isOpen, onToggle }) {
   return (
     <div
       className={`group relative backdrop-blur-xl bg-[#0c101f]/60 border rounded-2xl overflow-hidden transition-all duration-300 ${
-        isOpen ? "border-red-500/30 shadow-[0_0_25px_rgba(220,38,38,0.08)]" : "border-white/5 hover:border-white/10"
+        isOpen ? "border-red-500/30 shadow-[0_0_25px_rgba(220,38,38,0.08)] bg-[#0c101f]/85" : "border-white/5 hover:border-white/10"
       }`}
     >
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-red-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
+        className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left cursor-pointer"
       >
         <span className={`text-sm font-bold leading-snug transition-colors duration-200 ${isOpen ? "text-white" : "text-slate-300"}`}>
           {q}
@@ -196,42 +196,32 @@ export default function FAQSection() {
   };
 
   return (
-    <section className="relative min-h-screen bg-[#070a13] text-white py-20 px-4 sm:px-8 overflow-hidden">
-      {/* Background glows */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-red-600/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[350px] h-[350px] bg-rose-900/5 rounded-full blur-[100px] -z-10 pointer-events-none" />
+    <section className="relative bg-[#070a13] text-white py-20 px-4 sm:px-8 overflow-hidden">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-red-500/20 to-transparent" />
 
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 mb-5">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
-            </span>
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400">
-              Got Questions?
-            </span>
-          </div>
+      <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-red-600/4 rounded-full blur-[100px] pointer-events-none" />
 
-          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tighter mb-4 leading-tight">
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-12">
+          
+
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tighter leading-tight mb-3">
             Frequently Asked{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-rose-600">
               Questions
             </span>
-          </h1>
-          <p className="text-slate-400 text-lg max-w-xl mx-auto font-light leading-relaxed">
+          </h2>
+          <p className="text-slate-400 text-base max-w-xl font-light leading-relaxed">
             Everything you need to know about donating blood, requesting blood, and using RoktoSeva.
           </p>
         </div>
 
-        {/* Category tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
+        <div className="flex flex-wrap justify-start gap-2 mb-10">
           {categories.map((cat, idx) => (
             <button
               key={cat.label}
               onClick={() => handleCategoryChange(idx)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 border ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 border cursor-pointer ${
                 activeCategory === idx
                   ? "bg-red-500/15 border-red-500/40 text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.15)]"
                   : "bg-white/[0.03] border-white/5 text-slate-400 hover:text-white hover:border-white/10"
@@ -245,7 +235,6 @@ export default function FAQSection() {
           ))}
         </div>
 
-        {/* FAQ list */}
         <div className="flex flex-col gap-3">
           {categories[activeCategory].faqs.map((item, idx) => (
             <FAQItem
@@ -258,10 +247,8 @@ export default function FAQSection() {
           ))}
         </div>
 
-        {/* Still have questions CTA */}
-        <div className="relative mt-14 backdrop-blur-xl bg-[#0c101f]/60 border border-white/5 rounded-3xl p-8 sm:p-10 text-center overflow-hidden">
+        <div className="relative mt-14 backdrop-blur-xl bg-[#0c101f]/80 border border-white/5 rounded-3xl p-8 sm:p-10 text-center overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_15px_#ef4444]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-red-500/[0.04] to-transparent pointer-events-none rounded-3xl" />
 
           <div className="relative z-10">
             <div className="w-12 h-12 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-5 text-red-400">
@@ -270,25 +257,25 @@ export default function FAQSection() {
               </svg>
             </div>
 
-            <h2 className="text-xl sm:text-2xl font-extrabold uppercase tracking-widest text-white mb-2">
+            <h3 className="text-xl sm:text-2xl font-extrabold uppercase tracking-widest text-white mb-2">
               Still have questions?
-            </h2>
-            <p className="text-slate-400 text-sm max-w-md mx-auto mb-7 leading-relaxed">
+            </h3>
+            <p className="text-slate-400 text-sm max-w-md mx-auto mb-7 leading-relaxed font-light">
               Our team is available 24/7 for emergencies and responds to all other queries within 3 hours.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
                 href="/contact"
-                className="px-6 py-3 bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold text-xs uppercase tracking-widest rounded-xl shadow-[0_4px_25px_rgba(220,38,38,0.25)] hover:shadow-[0_4px_35px_rgba(220,38,38,0.45)] transition-all duration-300"
+                className="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold text-xs uppercase tracking-widest rounded-xl shadow-[0_4px_25px_rgba(220,38,38,0.25)] hover:shadow-[0_4px_35px_rgba(220,38,38,0.45)] transition-all duration-300"
               >
                 Contact Us
               </Link>
               <a
                 href="mailto:support@roktoseva.com"
-                className="px-6 py-3 bg-white/[0.03] border border-white/10 text-slate-300 font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-white/[0.06] hover:text-white transition-all duration-300"
+                className="w-full sm:w-auto px-6 py-3.5 bg-white/[0.03] border border-white/10 text-slate-300 font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-white/[0.06] hover:text-white transition-all duration-300"
               >
-                support@roktoseva.com
+                roktoseva@gmail.com
               </a>
             </div>
           </div>

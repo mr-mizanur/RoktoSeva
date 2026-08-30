@@ -84,24 +84,15 @@ export default function ContactSection() {
 
   return (
     <section className="relative bg-[#070a13] text-white py-20 px-4 sm:px-8 overflow-hidden">
-      {/* Top separator line matching other sections */}
+      
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[1px] bg-gradient-to-r from-transparent via-red-500/20 to-transparent" />
       
-      {/* Background glows matching guidelines & faq */}
+      
       <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-red-600/4 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto">
-        {/* Header (Left-aligned matching Guidelines) */}
         <div className="mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 mb-4">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
-            </span>
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400">
-              We're Here to Help
-            </span>
-          </div>
+          
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tighter leading-tight mb-3">
             Get in{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-rose-600">
@@ -114,7 +105,6 @@ export default function ContactSection() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          {/* Contact Info Cards */}
           <div className="lg:col-span-2 flex flex-col gap-4">
             {contactCards.map((card) => {
               const Wrapper = card.href ? "a" : "div";
@@ -140,7 +130,6 @@ export default function ContactSection() {
               );
             })}
 
-            {/* Live badge */}
             <div className="backdrop-blur-xl bg-[#0c101f]/60 border border-white/5 rounded-2xl p-5">
               <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-3">Network Status</p>
               <div className="flex items-center gap-2.5">
@@ -154,7 +143,6 @@ export default function ContactSection() {
             </div>
           </div>
 
-          {/* Contact Form */}
           <div className="lg:col-span-3">
             <div className="relative backdrop-blur-xl bg-[#0c101f]/80 border border-white/5 rounded-3xl p-6 sm:p-8 shadow-2xl overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_15px_#ef4444]" />
