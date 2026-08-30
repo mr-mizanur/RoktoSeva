@@ -3,6 +3,9 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { PiHospitalDuotone } from 'react-icons/pi';
+import { GrMapLocation } from 'react-icons/gr';
+import { BsCalendarDateFill } from 'react-icons/bs';
 
 export default function PendingRequests() {
   const [requests, setRequests] = useState([]);
@@ -122,10 +125,10 @@ export default function PendingRequests() {
                     <h3 className="text-lg font-bold text-white mb-3 group-hover:text-red-400 transition-colors">{req.patientName}</h3>
                     
                     <div className="space-y-1.5 text-sm text-slate-400">
-                      <p className="text-xs">Hospital: <span className="text-slate-300 font-medium">{req.hospital}</span></p>
-                      <p className="text-xs">Location: <span className="text-slate-300 font-medium">{req.upazila}, {req.district}</span></p>
+                      <p className="text-xs flex gap-1"><PiHospitalDuotone /> Hospital: <span className="text-slate-300 font-medium">{req.hospital}</span></p>
+                      <p className="text-xs flex gap-1" > <GrMapLocation /> Location: <span className="text-slate-300 font-medium">{req.upazila}, {req.district}</span></p>
                       {req.dateNeeded && (
-                        <p className="text-xs">Date Needed: <span className="text-slate-300 font-medium">{req.dateNeeded}</span></p>
+                        <p className="text-xs flex gap-1"> <BsCalendarDateFill /> Date Needed: <span className="text-slate-300 font-medium">{req.dateNeeded}</span></p>
                       )}
                     </div>
 

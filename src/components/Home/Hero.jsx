@@ -63,7 +63,7 @@ const Hero = () => {
         animate="visible"
       >
 
-        <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 mb-6">
+        <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 mb-6 mt-10">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
@@ -102,15 +102,15 @@ const Hero = () => {
       
         <motion.div variants={itemVariants} className="mt-20 pt-10 border-t border-white/10 grid grid-cols-3 gap-8 max-w-2xl mx-auto m-6">
           <div>
-            <div className="text-2xl md:text-3xl font-bold text-white">{stats.activeDonors}+</div>
+            <div className="text-3xl md:text-4xl font-bold text-white">{stats.activeDonors}+</div>
             <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-1">Active Donors</div>
           </div>
           <div>
-            <div className="text-2xl md:text-3xl font-bold text-white">{stats.pendingRequests}+</div>
+            <div className="text-3xl md:text-4xl font-bold text-white">{stats.pendingRequests}+</div>
             <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-1">Pending Requests</div>
           </div>
           <div>
-            <div className="text-2xl md:text-3xl font-bold text-white">
+            <div className="text-3xl md:text-4xl font-bold text-white">
               {totalFunding !== null ? `$${Number(totalFunding).toLocaleString()}` : '$0'}
             </div>
             <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-1">Total Funding</div>

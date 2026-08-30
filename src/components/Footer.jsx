@@ -32,7 +32,7 @@ const Footer = () => {
        
         <div className="flex flex-col gap-3">
           <h3 className="text-xs font-bold uppercase tracking-widest text-white">Contact</h3>
-          <a href="mailto:support@roktoseva.com" className="text-sm hover:text-white transition-colors duration-200">support@roktoseva.com</a>
+          <a href="mailto:support@roktoseva.com" className="text-sm hover:text-white transition-colors duration-200">roktoseva@gmail.com</a>
           <p className="text-sm">Dhaka, Bangladesh</p>
           <div className="flex items-center gap-3 mt-1">
             <span className="flex items-center gap-1.5 text-xs text-red-500 font-bold uppercase tracking-widest bg-red-500/10 border border-red-500/20 px-2.5 py-1 rounded-lg">

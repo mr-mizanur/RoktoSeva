@@ -10,7 +10,7 @@ const contactCards = [
       </svg>
     ),
     label: "Email Us",
-    value: "support@roktoseva.com",
+    value: "roktoseva@gmail.com",
     sub: "We reply within 3 hours",
     href: "mailto:support@roktoseva.com",
   },
