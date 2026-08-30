@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
 import { toast } from 'react-toastify';
+import Logo from '@/components/Logo';
 
 const LoginPage = () => {
   const router = useRouter();
@@ -45,8 +46,13 @@ const LoginPage = () => {
 
       
       <div className="w-full max-w-md backdrop-blur-xl bg-[#0c101f]/80 border border-white/5 rounded-3xl p-8 shadow-[0_20px_50px_rgba(0,0,0,0.6)] relative z-10">
+      <div className="flex justify-center mb-6">
+        <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/5 shadow-inner">
+          <Logo />
+        </div>
+      </div>
         <h2 className="text-3xl font-black text-center text-white uppercase tracking-wider mb-2">
-          Secure <span className="text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.4)]">Login</span>
+          Welcome <span className="text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.4)]">Back</span>
         </h2>
         <p className="text-center text-slate-400 text-sm mb-8 font-medium uppercase tracking-widest">
           Access the core quantum blood network

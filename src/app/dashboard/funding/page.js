@@ -33,6 +33,7 @@
 import React from 'react';
 import { MongoClient } from 'mongodb';
 import Link from 'next/link';
+import Logo from '@/components/Logo';
 
 async function getDonors(page) {
   const limit = 3;
@@ -70,12 +71,14 @@ export default async function FundingPage({ searchParams }) {
   const { donors, totalPages } = await getDonors(page);
 
   return (
-    <div className="min-h-screen bg-[#070a13] text-white p-8">
+    <div className="min-h-screen bg-[#070a13] text-white p-8 m-8">
 
-      <div className="max-w-md mx-auto p-8 bg-[#0c101f] border border-white/10 rounded-3xl shadow-2xl text-center mb-12">
-         <span className="text-lg font-black bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent uppercase tracking-widest">
-              Rokto<span className="text-red-500 font-black drop-shadow-[0_0_15px_rgba(239,68,68,0.6)]">Seva</span>
-            </span>
+      <div className="max-w-md mx-auto p-8 bg-[#0c101f] border border-white/10 rounded-3xl shadow-2xl text-center mb-12 ">
+        <div className="flex justify-center mb-6">
+        <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/5 shadow-inner">
+          <Logo />
+        </div>
+      </div>
         <form action="/api/checkout_sessions" method="POST">
           <button type="submit" className="w-full bg-red-600 hover:bg-red-700 font-bold py-4 rounded-xl">Donate $10</button>
         </form>

@@ -72,6 +72,7 @@
 import { redirect } from 'next/navigation';
 import { stripe } from '../../../../lib/stripe';
 import { MongoClient } from 'mongodb'; // আপনার ডাটাবেস ক্লায়েন্ট ইম্পোর্ট করুন
+import Logo from '@/components/Logo';
 
 export default async function SuccessPage({ searchParams }) {
   const params = await searchParams;
@@ -115,9 +116,11 @@ export default async function SuccessPage({ searchParams }) {
       <div className="min-h-screen flex items-center justify-center bg-[#070a13] text-white p-4">
         <div className="max-w-md w-full p-10 bg-[#0c101f] border border-green-500/20 rounded-3xl text-center shadow-2xl">
           <div className="text-6xl mb-4">
-              <span className="text-lg font-black bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent uppercase tracking-widest">
-              Rokto<span className="text-red-500 font-black drop-shadow-[0_0_15px_rgba(239,68,68,0.6)]">Seva</span>
-            </span>
+             <div className="flex justify-center mb-6">
+        <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/5 shadow-inner">
+          <Logo />
+        </div>
+      </div>
           </div>
           <h1 className="text-3xl font-black text-white mb-2">Payment Successful!</h1>
           <p className="text-gray-400 mb-6">আপনার অমূল্য অনুদানের জন্য RoktoSeva পরিবার কৃতজ্ঞ।</p>

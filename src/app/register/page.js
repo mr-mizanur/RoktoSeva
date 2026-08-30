@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { signUp } from '@/lib/auth-client';
 import { districts as allDistricts, upazilas as allUpazilas } from '@/data/locationData';
 import { toast } from 'react-toastify';
+import Logo from '@/components/Logo';
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -92,6 +93,11 @@ const RegisterPage = () => {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-red-600/5 rounded-full blur-[140px] -z-10" />
 
       <div className="w-full max-w-2xl backdrop-blur-xl bg-[#0c101f]/80 border border-white/5 rounded-3xl p-8 shadow-[0_20px_50px_rgba(0,0,0,0.6)] relative z-10">
+      <div className="flex justify-center mb-6">
+        <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/5 shadow-inner">
+          <Logo />
+        </div>
+      </div>
         <h2 className="text-3xl font-black text-center text-white uppercase tracking-wider mb-2">
           Create <span className="text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.4)]">Account</span>
         </h2>
