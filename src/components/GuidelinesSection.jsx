@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 const beforeTips = [
@@ -68,11 +70,11 @@ function SectionHeader({ badge, title, highlight, subtitle }) {
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 mb-4">
         <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400">{badge}</span>
       </div>
-      <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tighter mb-2">
+      <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-2">
         {title}{" "}
         <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-rose-600">{highlight}</span>
       </h2>
-      {subtitle && <p className="text-slate-400 text-sm leading-relaxed max-w-xl">{subtitle}</p>}
+      {subtitle && <p className="text-slate-400 text-sm leading-relaxed max-w-xl font-light">{subtitle}</p>}
     </div>
   );
 }
@@ -86,24 +88,20 @@ export default function GuidelinesSection() {
 
       <div className="max-w-6xl mx-auto">
         
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 mb-5">
-           
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400">
-              Save Lives Safely
-            </span>
-          </div>
-          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tighter mb-4 leading-tight">
+        <div className="mb-16">
+         
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight mb-3 leading-tight">
             Blood Donation{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-rose-600">
               Guidelines
             </span>
-          </h1>
-          <p className="text-slate-400 text-lg max-w-xl mx-auto font-light leading-relaxed">
+          </h2>
+          <p className="text-slate-400 text-sm sm:text-base max-w-xl font-light leading-relaxed">
             Everything you need to know to donate safely, recover quickly, and make the biggest impact.
           </p>
         </div>
 
+        {/* Step 01: Before */}
         <div className="mb-16">
           <SectionHeader
             badge="Step 01"
@@ -116,7 +114,6 @@ export default function GuidelinesSection() {
           </div>
         </div>
 
-   
         <div className="mb-16">
           <SectionHeader
             badge="Step 02"
@@ -129,7 +126,6 @@ export default function GuidelinesSection() {
           </div>
         </div>
 
-        
         <div className="mb-16">
           <SectionHeader
             badge="Step 03"
@@ -142,7 +138,7 @@ export default function GuidelinesSection() {
           </div>
         </div>
 
-        
+        {/* Eligibility Section */}
         <div className="mb-16">
           <SectionHeader
             badge="Eligibility"
@@ -150,13 +146,13 @@ export default function GuidelinesSection() {
             highlight="Donate?"
             subtitle="Basic criteria that must be met before donating blood."
           />
-          <div className="relative backdrop-blur-xl bg-[#0c101f]/60 border border-white/5 rounded-3xl overflow-hidden">
+          <div className="relative backdrop-blur-xl bg-[#0c101f]/60 border border-white/5 rounded-3xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
             <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_15px_#ef4444]" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 divide-y divide-white/5 sm:divide-y-0 sm:divide-x-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2">
               {eligibility.map((row, i) => (
                 <div
                   key={i}
-                  className={`flex items-center justify-between gap-4 px-6 py-4 ${i % 2 === 0 ? "border-b border-white/5" : "border-b border-white/5"} last:border-b-0 sm:[&:nth-last-child(2)]:border-b-0`}
+                  className="flex items-center justify-between gap-4 px-6 py-4 border-b border-white/5 last:border-b-0 sm:[&:nth-last-child(2)]:border-b-0"
                 >
                   <span className="text-xs font-bold uppercase tracking-widest text-slate-500">{row.label}</span>
                   <span className="text-sm font-bold text-white text-right">{row.value}</span>
@@ -166,7 +162,7 @@ export default function GuidelinesSection() {
           </div>
         </div>
 
-        
+        {/* Compatibility Chart */}
         <div className="mb-16">
           <SectionHeader
             badge="Compatibility"
@@ -174,7 +170,7 @@ export default function GuidelinesSection() {
             highlight="Chart"
             subtitle="Know which blood groups can give to and receive from each other."
           />
-          <div className="relative backdrop-blur-xl bg-[#0c101f]/60 border border-white/5 rounded-3xl overflow-hidden">
+          <div className="relative backdrop-blur-xl bg-[#0c101f]/60 border border-white/5 rounded-3xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
             <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_15px_#ef4444]" />
             <div className="overflow-x-auto">
               <table className="w-full min-w-[500px]">
@@ -217,38 +213,43 @@ export default function GuidelinesSection() {
               </table>
             </div>
           </div>
-          <p className="text-xs text-slate-600 mt-3 text-center">
-            O− is the universal donor. AB+ is the universal recipient.
+          <p className="text-xs text-slate-500 mt-3 font-light">
+            * O− is the universal donor. AB+ is the universal recipient.
           </p>
         </div>
 
-       
-        <div className="relative backdrop-blur-xl bg-[#0c101f]/60 border border-white/5 rounded-3xl p-8 sm:p-10 text-center overflow-hidden">
+        {/* CTA Box (Left Aligned Text) */}
+        <div className="relative backdrop-blur-xl bg-[#0c101f]/60 border border-white/5 rounded-3xl p-8 sm:p-10 overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
           <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_15px_#ef4444]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-red-500/[0.04] to-transparent pointer-events-none rounded-3xl" />
-          <div className="relative z-10">
-            <h2 className="text-xl sm:text-2xl font-extrabold uppercase tracking-widest text-white mb-2">
-              Ready to Save a Life?
-            </h2>
-            <p className="text-slate-400 text-sm max-w-md mx-auto mb-7 leading-relaxed">
-              Register as a donor today. One donation can save up to three lives.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div className="absolute inset-0 bg-gradient-to-r from-red-500/[0.04] to-transparent pointer-events-none rounded-3xl" />
+          
+          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-2">
+                Ready to Save a Life?
+              </h2>
+              <p className="text-slate-400 text-sm max-w-md font-light leading-relaxed">
+                Register as a donor today. One donation can save up to three lives.
+              </p>
+            </div>
+            
+            <div className="flex flex-wrap items-center gap-3">
               <Link
                 href="/register"
-                className="px-6 py-3 bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold text-xs uppercase tracking-widest rounded-xl shadow-[0_4px_25px_rgba(220,38,38,0.25)] hover:shadow-[0_4px_35px_rgba(220,38,38,0.45)] transition-all duration-300"
+                className="px-6 py-3.5 bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold text-xs uppercase tracking-widest rounded-xl shadow-[0_4px_25px_rgba(220,38,38,0.3)] hover:shadow-[0_4px_35px_rgba(220,38,38,0.5)] transition-all duration-300"
               >
                 Become a Donor
               </Link>
               <Link
                 href="/search"
-                className="px-6 py-3 bg-white/[0.03] border border-white/10 text-slate-300 font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-white/[0.06] hover:text-white transition-all duration-300"
+                className="px-6 py-3.5 bg-white/[0.03] border border-white/10 text-slate-300 font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-white/[0.06] hover:text-white transition-all duration-300"
               >
                 Find Donors
               </Link>
             </div>
           </div>
         </div>
+
       </div>
     </section>
   );
