@@ -1,7 +1,7 @@
 import GuidelinesSection from "@/components/GuidelinesSection";
 
 export const metadata = {
-  title: "Blood Donation Guidelines",
+  title: "Guidelines ",
   description:
     "Complete blood donation guidelines and tips for Bangladesh donors — what to do before, during, and after donating, eligibility criteria, and a full blood group compatibility chart.",
   alternates: {

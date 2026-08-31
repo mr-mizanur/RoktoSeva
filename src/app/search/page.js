@@ -6,6 +6,10 @@ import { districts, upazilas } from "@/data/locationData";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
+
+
+
+
 const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 const BG_GRADIENT = {
   "A+": "from-red-600 to-rose-700", "A-": "from-red-700 to-red-900",
