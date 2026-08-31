@@ -7,7 +7,6 @@ import { authClient } from '@/lib/auth-client';
 import { toast } from 'react-toastify';
 import Logo from './Logo';
 
-
 const Navbar = () => {
   const pathname = usePathname();
   const router = useRouter();
@@ -41,20 +40,30 @@ const Navbar = () => {
     }`;
   };
 
+  const getMobileLinkStyles = (path) => {
+    const isActive = pathname === path;
+    return `flex items-center justify-between p-3.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-all duration-300 ${
+      isActive 
+        ? 'bg-gradient-to-r from-red-600/20 to-rose-600/10 text-white border border-red-500/40 shadow-[0_0_15px_rgba(239,68,68,0.2)]' 
+        : 'text-slate-400 bg-white/[0.02] border border-white/5 hover:text-white hover:bg-white/5'
+    }`;
+  };
+
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-[#070a13]/70 border-b border-red-500/10 px-4 sm:px-8 py-3.5 transition-all duration-300 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
       
-     
       <div className="absolute top-0 left-1/4 -z-10 h-[1px] w-1/2 bg-gradient-to-r from-transparent via-red-500 to-transparent shadow-[0_0_20px_#ef4444]" />
 
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          {/* Pro Hamburger Menu Button */}
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-            className="md:hidden p-2 text-slate-400 hover:text-white rounded-xl hover:bg-white/5 transition-all"
+            className="md:hidden flex items-center justify-center w-10 h-10 rounded-xl bg-white/[0.03] border border-white/10 text-red-500 hover:bg-red-500/10 hover:border-red-500/30 transition-all duration-300 shadow-[0_0_10px_rgba(239,68,68,0.15)] focus:outline-none"
+            aria-label="Toggle Mobile Menu"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
               {isMobileMenuOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               ) : (
@@ -63,17 +72,11 @@ const Navbar = () => {
             </svg>
           </button>
 
-  
           <Link href="/" className="flex items-center gap-3 group">
-           
-
-         <Logo/>
-
-
+            <Logo />
           </Link>
         </div>
 
-  
         <div className="hidden md:flex items-center gap-3 bg-white/[0.02] border border-white/5 p-1.5 rounded-2xl backdrop-blur-md">
           <Link href="/" className={getLinkStyles('/')}>Home</Link>
           <Link href="/dashboard/my-donation-requests" className={getLinkStyles('/dashboard/my-donation-requests')}>Donation Requests</Link>
@@ -84,8 +87,7 @@ const Navbar = () => {
           <Link href="/contact" className={getLinkStyles('/contact')}>Contact</Link>
         </div>
 
-       
-        <div className="flex items-center gap-4 relative">
+        <div className="flex items-center gap-3 relative">
           {isPending ? (
             <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/5 border border-white/10 animate-pulse" />
           ) : user ? (
@@ -132,11 +134,12 @@ const Navbar = () => {
               )}
             </div>
           ) : (
-            <div className="flex items-center gap-3 sm:gap-4">
-              <Link href="/login" className="text-xs sm:text-sm font-semibold tracking-wider text-slate-400 hover:text-white transition-colors duration-300 uppercase">
+            /* Shortened & Compact Login/Register Buttons for Mobile & Desktop */
+            <div className="flex items-center gap-2 sm:gap-4">
+              <Link href="/login" className="px-3 py-1.5 sm:px-4 sm:text-sm font-semibold tracking-wider text-slate-400 hover:text-white transition-colors duration-300 uppercase text-xs">
                 Login
               </Link>
-              <Link href="/register" className="relative group px-4 py-2 sm:px-5 sm:py-2.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-red-600 to-rose-600 rounded-xl border border-red-500/20 shadow-[0_4px_15px_rgba(220,38,38,0.25)]">
+              <Link href="/register" className="relative group px-3.5 py-1.5 sm:px-5 sm:py-2.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-red-600 to-rose-600 rounded-xl border border-red-500/20 shadow-[0_4px_15px_rgba(220,38,38,0.25)]">
                 Register
               </Link>
             </div>
@@ -144,63 +147,49 @@ const Navbar = () => {
         </div>
       </div>
 
-
       {isMobileMenuOpen && (
         <>
-          <div className="fixed inset-0 top-[66px] bg-black/60 backdrop-blur-sm z-40 md:hidden" onClick={() => setIsMobileMenuOpen(false)} />
+          <div className="fixed inset-0 top-[65px] bg-black/70 backdrop-blur-md z-40 md:hidden" onClick={() => setIsMobileMenuOpen(false)} />
           
-          <div className="absolute top-[66px] left-0 w-full bg-[#070a13]/95 border-b border-white/5 backdrop-blur-2xl p-5 z-50 md:hidden flex flex-col gap-4 animate-in slide-in-from-top duration-300">
-            <Link 
-              href="/" 
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`p-3 rounded-xl font-bold uppercase tracking-widest text-sm text-center ${pathname === '/' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'text-slate-400 bg-white/[0.01]'}`}
-            >
-              Home
+          <div className="absolute top-[65px] left-0 w-full bg-[#070a13]/95 border-b border-red-500/10 backdrop-blur-2xl p-5 z-50 md:hidden flex flex-col gap-2.5 shadow-[0_15px_30px_rgba(0,0,0,0.8)] animate-in slide-in-from-top duration-300">
+            <div className="absolute inset-0 bg-gradient-to-b from-red-500/5 to-transparent pointer-events-none" />
+            
+            <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className={getMobileLinkStyles('/')}>
+              <span>Home</span>
+              {pathname === '/' && <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]" />}
             </Link>
-            <Link
-              href="/dashboard/my-donation-requests"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`p-3 rounded-xl font-bold uppercase tracking-widest text-sm text-center ${pathname === '/dashboard/my-donation-requests' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'text-slate-400 bg-white/[0.01]'}`}
-            >
-              Donation Requests
+            
+            <Link href="/dashboard/my-donation-requests" onClick={() => setIsMobileMenuOpen(false)} className={getMobileLinkStyles('/dashboard/my-donation-requests')}>
+              <span>Donation Requests</span>
+              {pathname === '/dashboard/my-donation-requests' && <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]" />}
             </Link>
-            <Link
-              href="/search"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`p-3 rounded-xl font-bold uppercase tracking-widest text-sm text-center ${pathname === '/search' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'text-slate-400 bg-white/[0.01]'}`}
-            >
-              Search
-            </Link>
-            <Link
-              href="/guidelines"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`p-3 rounded-xl font-bold uppercase tracking-widest text-sm text-center ${pathname === '/guidelines' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'text-slate-400 bg-white/[0.01]'}`}
-            >
-              Guidelines
-            </Link>
-            <Link
-              href="/faq"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`p-3 rounded-xl font-bold uppercase tracking-widest text-sm text-center ${pathname === '/faq' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'text-slate-400 bg-white/[0.01]'}`}
-            >
-              FAQ
-            </Link>
-            <Link
-              href="/contact"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`p-3 rounded-xl font-bold uppercase tracking-widest text-sm text-center ${pathname === '/contact' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'text-slate-400 bg-white/[0.01]'}`}
-            >
-              Contact
-            </Link>
+
             {user && (
-              <Link 
-                href="/funding" 
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`p-3 rounded-xl font-bold uppercase tracking-widest text-sm text-center ${pathname === '/funding' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'text-slate-400 bg-white/[0.01]'}`}
-              >
-                Funding
+              <Link href="/dashboard/funding" onClick={() => setIsMobileMenuOpen(false)} className={getMobileLinkStyles('/dashboard/funding')}>
+                <span>Funding</span>
+                {pathname === '/dashboard/funding' && <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]" />}
               </Link>
             )}
+
+            <Link href="/search" onClick={() => setIsMobileMenuOpen(false)} className={getMobileLinkStyles('/search')}>
+              <span>Search</span>
+              {pathname === '/search' && <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]" />}
+            </Link>
+
+            <Link href="/guidelines" onClick={() => setIsMobileMenuOpen(false)} className={getMobileLinkStyles('/guidelines')}>
+              <span>Guidelines</span>
+              {pathname === '/guidelines' && <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]" />}
+            </Link>
+
+            <Link href="/faq" onClick={() => setIsMobileMenuOpen(false)} className={getMobileLinkStyles('/faq')}>
+              <span>FAQ</span>
+              {pathname === '/faq' && <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]" />}
+            </Link>
+
+            <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className={getMobileLinkStyles('/contact')}>
+              <span>Contact</span>
+              {pathname === '/contact' && <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444]" />}
+            </Link>
           </div>
         </>
       )}
