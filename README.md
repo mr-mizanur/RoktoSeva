@@ -1,299 +1,249 @@
-<div align="center">
+# StudyBuddy AI — Setup Guide (No Coding Experience Needed)
 
-<img src="public/logo.svg" alt="RoktoSeva Logo" width="80" />
+This is a small website with an AI study-tutor chat and student sign-up/log-in
+built in. This guide assumes you've never deployed a website before and
+walks through every click. It should take about 45–60 minutes the first
+time.
 
-# RoktoSeva
+## How it fits together
 
-### Bangladesh's Blood Donation Network
+A website like this needs four things, and you're starting with just the
+first one:
 
-**Connect donors with patients. Save lives.**
+1. **A domain** (e.g. `yoursite.com`) — you already have this.
+2. **Hosting** — a place that stores and serves the site's files. We'll use
+   **Cloudflare Pages**, which is free and also lets the AI chat run
+   securely (see next point).
+3. **Student accounts** — so only signed-in students can use the AI chat
+   (this protects both your AI budget and the students). We'll use
+   **Supabase**, a free service that handles sign-up, log-in, and storing
+   passwords securely, so nobody has to build that from scratch.
+4. **The AI itself** — the chat calls Anthropic's Claude API. Your API key
+   must never sit in the website's front-end code (anyone could steal it),
+   so this project includes a small "serverless function"
+   (`functions/api/chat.js`) that keeps the key private on Cloudflare's
+   servers, checks that the request really came from a signed-in student,
+   and only then answers.
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-rokto--seva.vercel.app-red?style=for-the-badge&logo=vercel)](https://rokto-seva.vercel.app)
-[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
-[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)](https://react.dev)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/atlas)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-06B6D4?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com)
+## What this costs
 
-</div>
-
----
-
-## What is RoktoSeva?
-
-**RoktoSeva** (রক্তসেবা — "Blood Service") is a full-stack blood donation platform built for Bangladesh. It bridges the gap between blood donors and patients in urgent need by providing a real-time request system, smart donor search, role-based dashboards, and a community funding mechanism — all wrapped in a modern, dark-themed UI.
-
-> Every second counts in an emergency. RoktoSeva makes finding compatible blood donors fast, reliable, and free.
-
----
-
-## Live Demo
-
-**[https://rokto-seva.vercel.app](https://rokto-seva.vercel.app)**
-
-| Role | Demo Email | Demo Password |
-|------|-----------|---------------|
-| Admin |... |
-| Donor |... |
-| Volunteer |... |
-
----
-
-## Features
-
-### For Donors
-- Register with blood group, district, and upazila
-- Create, edit, and track personal blood donation requests
-- Real-time request status updates (Pending → In-Progress → Done / Canceled)
-- Profile management with avatar upload via ImgBB
-
-### For Volunteers
-- View and manage all active donation requests
-- Update request statuses across the platform
-- Dedicated volunteer dashboard overview
-
-### For Admins
-- Full user management — view, block/unblock, and promote users
-- Platform-wide request oversight and control
-- Funding transaction history and analytics
-- Dashboard statistics (Total Users, Total Requests, Total Funding)
-
-### Platform-Wide
-- Smart donor search by **Blood Group**, **District**, and **Upazila**
-- Secure **email + password authentication** via Better Auth
-- Stripe-powered **community funding** with payment success flow
-- Fully responsive UI — sidebar dashboard works on mobile, tablet, and desktop
-- Toast notifications for all user actions (login, logout, form submissions)
-- SEO-optimized with Open Graph, Twitter Card, and sitemap support
+- **Cloudflare Pages hosting: $0.** The free plan comfortably covers a
+  school project's traffic.
+- **Supabase (student accounts): $0.** The free tier covers far more
+  students than a school project typically needs.
+- **The AI (Anthropic API): pay-as-you-go, usually a few dollars a month**
+  for light use by a class or school. This code uses Claude's cheapest,
+  fastest model (Haiku), caps each answer's length, and now requires
+  sign-in — all to keep costs low and predictable. You can also set a hard
+  spending cap in Anthropic's console (Step 5) so you can never be
+  surprised by a bill.
 
 ---
 
-## Tech Stack
+## Step 1 — Put the files on GitHub
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | Next.js 16 (App Router) |
-| UI Library | React 19 |
-| Styling | Tailwind CSS v4 + DaisyUI |
-| Authentication | Better Auth + MongoDB Adapter |
-| Database | MongoDB Atlas |
-| Payments | Stripe API + `@stripe/react-stripe-js` |
-| Image Upload | ImgBB API |
-| Notifications | React Toastify |
-| Icons | Lucide React |
-| Component Library | HeroUI |
-| Deployment | Vercel |
+GitHub stores your code and lets Cloudflare auto-deploy it. No command line
+needed — you can upload files straight from your browser.
 
----
+1. Go to [github.com](https://github.com) and sign up for a free account
+   (if you don't have one).
+2. Click the **+** icon (top right) → **New repository**.
+3. Name it something like `studybuddy-site`. Leave it **Public** or
+   **Private** (either works). Click **Create repository**.
+4. On the new repo's page, click **uploading an existing file** (or
+   **Add file → Upload files**).
+5. Drag in *all* the files and folders from this project — `index.html`,
+   `style.css`, `script.js`, `auth.js`, `config.js`, `README.md`, and the
+   whole `functions` folder (with `functions/api/chat.js` inside it).
+   GitHub's uploader supports dragging folders in most browsers; if it
+   flattens the folder, create the path manually by naming the file
+   `functions/api/chat.js` in the "Add file → Create new file" box and
+   pasting its contents in.
+6. Scroll down and click **Commit changes**.
 
-## Project Structure
-
-```
-src/
-├── app/
-│   ├── api/
-│   │   ├── auth/[...all]/      # Better Auth catch-all handler
-│   │   └── checkout_sessions/  # Stripe checkout session API
-│   ├── dashboard/
-│   │   ├── admin/              # Admin panel (users, requests, overview)
-│   │   ├── donor/              # Donor overview
-│   │   ├── volunteer/          # Volunteer panel
-│   │   ├── create-donation-request/
-│   │   ├── my-donation-requests/
-│   │   ├── edit-request/[id]/
-│   │   ├── funding/            # Stripe funding page + success screen
-│   │   ├── profile/
-│   │   └── layout.jsx          # Role-aware sidebar dashboard layout
-│   ├── blood-donation-request/[id]/  # Public request detail page
-│   ├── search/                 # Donor search page
-│   ├── login/
-│   ├── register/
-│   ├── contact/
-│   └── layout.js               # Root layout with global ToastProvider
-├── components/
-│   ├── Navbar.jsx              # Sticky responsive navbar
-│   ├── Footer.jsx
-│   ├── ConditionalNavbar.jsx   # Hides navbar on dashboard routes
-│   ├── ToastProvider.jsx       # Global react-toastify container
-│   ├── PendingRequests.jsx
-│   ├── ContactSection.jsx
-│   └── Home/Hero.jsx
-├── lib/
-│   ├── auth.js                 # Better Auth server configuration
-│   ├── auth-client.js          # Better Auth client
-│   ├── db.js                   # MongoDB connection
-│   └── stripe.js               # Stripe server instance
-└── data/
-    └── locationData.js         # Bangladesh districts + upazilas dataset
-```
+You should now see all the files listed in your repository.
 
 ---
 
-## User Roles
+## Step 2 — Deploy it with Cloudflare Pages
 
-```
-┌─────────────────────────────────────────────────────┐
-│                     ADMIN                           │
-│  • Manage all users (block / unblock / promote)     │
-│  • View and control all requests platform-wide      │
-│  • Access funding data and analytics                │
-├─────────────────────────────────────────────────────┤
-│                   VOLUNTEER                         │
-│  • View all donation requests                       │
-│  • Update request statuses                          │
-├─────────────────────────────────────────────────────┤
-│                     DONOR                           │
-│  • Create and manage own donation requests          │
-│  • Edit profile details                             │
-│  • Fund the platform via Stripe                     │
-└─────────────────────────────────────────────────────┘
-```
+1. Go to [dash.cloudflare.com](https://dash.cloudflare.com) and sign up for
+   a free account.
+2. In the left sidebar, click **Workers & Pages** → **Create** → **Pages**
+   tab → **Connect to Git**.
+3. Authorize Cloudflare to access your GitHub account, then select the
+   `studybuddy-site` repository.
+4. On the build settings screen, you can leave everything as default —
+   **no build command is needed** (this is a plain HTML/CSS/JS site, not a
+   framework). Click **Save and Deploy**.
+5. Wait about a minute. You'll get a working URL like
+   `studybuddy-site.pages.dev` — open it. The site will load, but sign-up
+   and chat won't work yet (that's the next steps).
 
 ---
 
-## Getting Started
+## Step 3 — Create student accounts with Supabase
 
-### Prerequisites
-
-- Node.js >= 18
-- MongoDB Atlas account
-- Stripe account
-- ImgBB account (free tier works)
-
-### Installation
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/mizanurcodes-ux/roktoseva.git
-cd roktoseva
-
-# 2. Install dependencies
-npm install
-
-# 3. Set up environment variables
-cp .env.example .env.local
-
-# 4. Run the development server
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+1. Go to [supabase.com](https://supabase.com) and sign up for a free
+   account.
+2. Click **New project**. Give it a name (e.g. `studybuddy`), set a
+   database password (Supabase asks for one — just save it somewhere; you
+   likely won't need to type it again), and pick the region closest to your
+   students. Click **Create new project** and wait a minute or two while it
+   spins up.
+3. Once it's ready, go to **Settings → API** (in the left sidebar). You'll
+   need two values from this page:
+   - **Project URL** (looks like `https://abcdefgh.supabase.co`)
+   - **anon / public** key (a long string) — NOT the `service_role` key,
+     which must stay secret and isn't used by this project.
+4. Optional but worth knowing: by default, Supabase requires students to
+   click a confirmation link in their email before they can log in. For a
+   quick classroom setup you can turn this off under **Authentication →
+   Providers → Email → Confirm email**. Leaving it on is more secure but
+   means students need a real, checkable email address.
 
 ---
 
-## Environment Variables
+## Step 4 — Connect Supabase to your site
 
-Create a `.env.local` file in the project root with the following:
+You need to give your Supabase URL and key to *both* the front end (the
+page students see) and the back end (the function that talks to the AI).
 
-```env
-# App
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_SERVER_URL=http://localhost:3000
+**Front end — edit `config.js`:**
+1. On GitHub, open `config.js` in your repository and click the pencil
+   (edit) icon.
+2. Replace the two placeholder values with your real Project URL and anon
+   key from Step 3:
+   ```js
+   window.SUPABASE_URL = "https://abcdefgh.supabase.co";
+   window.SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIs...";
+   ```
+3. Commit the change. Cloudflare Pages will automatically redeploy.
 
-# MongoDB
-MONGODB_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/roktoseva
+**Back end — add environment variables in Cloudflare:**
+1. In your Cloudflare Pages project, go to **Settings → Environment
+   variables** (sometimes shown as **Variables and Secrets**).
+2. Add two variables (values are the same ones from Step 3):
+   ```
+   SUPABASE_URL = https://abcdefgh.supabase.co
+   SUPABASE_ANON_KEY = eyJhbGciOiJIUzI1NiIs...
+   ```
+   These don't need to be "encrypted" secrets since the anon key is already
+   public — but it's fine either way.
+3. Save, then go to **Deployments** and **retry/redeploy** the latest
+   deployment.
 
-# Better Auth
-BETTER_AUTH_SECRET=your_super_secret_key_here
-BETTER_AUTH_URL=http://localhost:3000
-
-# Stripe
-STRIPE_SECRET_KEY=sk_test_...
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
-
-# ImgBB (image upload)
-NEXT_PUBLIC_IMGBB_API_KEY=your_imgbb_api_key
-```
-
----
-
-## Available Scripts
-
-```bash
-npm run dev      # Start development server
-npm run build    # Build for production
-npm run start    # Start production server
-npm run lint     # Run ESLint
-```
+Reload your `*.pages.dev` site — you should now see working Sign Up / Log
+In tabs above the chat. Try creating a test account.
 
 ---
 
-## Authentication Flow
+## Step 5 — Get an Anthropic API key
 
-RoktoSeva uses **[Better Auth](https://www.better-auth.com/)** for authentication — a TypeScript-first auth library with a MongoDB adapter.
-
-- **Sign Up** — Email + password registration with additional user fields (blood group, district, upazila, role, status)
-- **Sign In** — Email + password with callback URL redirect
-- **Session** — Accessed client-side via `authClient.useSession()`
-- **Sign Out** — Clears session and redirects to `/login`
-- **Route Protection** — All dashboard pages check session state before rendering
-
----
-
-## Payment & Funding
-
-The platform uses **Stripe Checkout** for community funding:
-
-1. User clicks "Fund" on the `/dashboard/funding` page
-2. A Stripe Checkout Session is created via `/api/checkout_sessions`
-3. User is redirected to Stripe's hosted payment page
-4. On success, user lands on `/dashboard/funding/success`
+1. Go to [console.anthropic.com](https://console.anthropic.com) and sign up.
+2. Add a small amount of prepaid credit (Settings → Billing) — even $5 goes
+   a long way with the cheap model this project uses. You can also set a
+   **usage limit** in Settings → Limits so spending can never exceed what
+   you choose.
+3. Go to **Settings → API Keys → Create Key**. Copy the key (it starts with
+   `sk-ant-...`) — you won't be able to see it again after this, so paste it
+   somewhere safe for the next step.
 
 ---
 
-## Deployment
+## Step 6 — Add the API key to Cloudflare (as a secret)
 
-The project is deployed on **Vercel** with zero-config Next.js support.
+This is the step that makes the AI chat itself actually respond.
 
-```bash
-# Deploy with Vercel CLI
-npx vercel --prod
-```
+1. Back in the Cloudflare dashboard, open your Pages project → **Settings →
+   Environment variables**.
+2. Click **Add variable**. For the name, enter exactly:
+   ```
+   ANTHROPIC_API_KEY
+   ```
+   For the value, paste the key you copied in Step 5.
+3. Make sure it's added for the **Production** environment (and Preview,
+   if you want the chat to work on preview deployments too). If there's an
+   **Encrypt** option, use it — this one really is a secret.
+4. Save, then go to **Deployments** and **retry/redeploy** the latest
+   deployment again.
 
-Set all environment variables in your Vercel project settings under **Settings → Environment Variables**.
-
----
-
-## Roadmap
-
-- [ ] SMS / email notifications for request status changes
-- [ ] Real-time donor availability toggling
-- [ ] Google / Facebook OAuth login
-- [ ] Public donor map with district-level clustering
-- [ ] PWA support for mobile offline access
-- [ ] Admin analytics charts (Chart.js / Recharts)
+Reload your site, log in with your test account, and try the chat — it
+should now respond.
 
 ---
 
-## Contributing
+## Step 7 — Connect your own domain
 
-Contributions are welcome! Please follow these steps:
+In Cloudflare, go to your Pages project → **Custom domains** → **Set up a
+domain**, and enter your domain (e.g. `yoursite.com` or a subdomain like
+`study.yoursite.com`). What happens next depends on where your domain is
+registered:
 
-```bash
-# 1. Fork the repository
-# 2. Create a feature branch
-git checkout -b feature/your-feature-name
+**If you're willing to move your domain's DNS to Cloudflare (recommended,
+still free, you keep your domain and registrar):**
+Add your domain as a "site" in Cloudflare first (dashboard → **Add a
+site**), then follow the instructions to change your domain's nameservers
+at your registrar to the two Cloudflare nameservers shown. This can take a
+few hours to a day to fully activate. Once it's active, the custom domain
+step above will finish automatically — Cloudflare adds the needed DNS
+record for you.
 
-# 3. Commit your changes
-git commit -m "feat: add your feature"
+**If you'd rather not touch nameservers, and you're okay using a
+subdomain** (like `study.yoursite.com` instead of the bare
+`yoursite.com`):
+After clicking **Set up a domain** in Cloudflare Pages, go to your current
+registrar's DNS settings (GoDaddy, Namecheap, etc.) and add a **CNAME**
+record: Name = `study` (or whatever subdomain you want), Value = your
+`....pages.dev` address. Do the Cloudflare Pages step *first*, or the
+domain won't resolve.
 
-# 4. Push to your fork and open a Pull Request
-git push origin feature/your-feature-name
-```
-
-Please make sure your code passes `npm run lint` before submitting a PR.
+Either way, once DNS finishes propagating, your site is live at your own
+domain.
 
 ---
 
-## License
+## Trying it out / troubleshooting
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+- **Sign up / log in tabs are missing or show an error immediately:**
+  `config.js` still has the placeholder values — finish Step 4.
+- **Chat says "Please log in to use the study chat":** you're not signed
+  in, or your session expired — log in again.
+- **Chat says a setup error about the API key:** double-check the variable
+  name is exactly `ANTHROPIC_API_KEY` (no typos, all caps) and that you
+  redeployed after adding it.
+- **Chat says "AI service error (401...)":** the Anthropic API key was
+  copied wrong, or the account has no credit — check
+  console.anthropic.com.
+- **Chat says "AI service error (429...)":** you've hit a rate or spend
+  limit — check your limits in the Anthropic console.
+- **Sign-up says "check your email" and nothing arrives:** check spam, or
+  turn off "Confirm email" in Supabase (Step 3) for testing.
+- **Site loads but looks unstyled:** make sure `style.css` was uploaded to
+  GitHub alongside `index.html` (they need to sit in the same folder).
 
----
+## Making changes later
 
-<div align="center">
+- Wording, subjects, and study tips: edit the text inside `index.html`.
+- Colors and spacing: edit `style.css` (the `:root` section at the top has
+  the main colors).
+- The AI's personality/instructions: edit `SYSTEM_PROMPT` in
+  `functions/api/chat.js`.
+- Managing student accounts (resetting passwords, removing a student): use
+  the **Authentication → Users** tab in your Supabase dashboard.
+- After editing on GitHub (you can edit files right in the browser with the
+  pencil icon), Cloudflare Pages automatically redeploys the site within a
+  minute or two.
 
-Built with purpose for Bangladesh 
+## A note on safety and privacy
 
-**[RoktoSeva](https://rokto-seva.vercel.app)** — because every drop matters.
-
-</div>
+This site now collects student email addresses and passwords (stored
+securely by Supabase, not by you directly) so students can sign in. Before
+using this with real students:
+- Check whether your school has rules about collecting student emails or
+  using third-party tools — many do.
+- Consider using a simple shared class email pattern rather than personal
+  emails if that fits your school's policy.
+- The AI chat itself has instructions built in to stay encouraging,
+  on-topic, and school-appropriate, but no AI filter is perfect — tell a
+  teacher or admin about the tool and keep an eye on how it's used.
