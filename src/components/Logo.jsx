@@ -10,8 +10,8 @@ export default function Logo({ showText = true, imageSize = 50, textClass = "tex
       {showText && (
         <div className="flex flex-col">
           <span className={`font-black uppercase tracking-wider leading-none ${textClass}`}>
-            <span className="text-red-500">Rokto</span>
-            <span className="text-red-500">Seva</span>
+            <span className="text-red-500">রক্ত</span>
+            <span className="text-red-500">সেবা</span>
           </span>
           <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-400 mt-1">
             Blood Donation
