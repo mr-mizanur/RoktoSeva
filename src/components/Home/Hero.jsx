@@ -77,7 +77,7 @@ const Hero = () => {
         <motion.h1 variants={itemVariants} className="text-5xl md:text-8xl font-extrabold text-white tracking-tighter mb-8 leading-[0.9]">
           রক্তদান করুন<br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-rose-600">
-           জীবনকে অনুপ্রাণিত করুন!
+           জীবনকে অনুপ্রাণিত করুন !
           </span>
         </motion.h1>
 
