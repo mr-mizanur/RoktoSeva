@@ -83,7 +83,7 @@ const Hero = () => {
 
        
         <motion.p variants={itemVariants} className="max-w-xl mx-auto text-lg md:text-xl text-slate-400 font-light mb-10 leading-relaxed">
-          RoktoSeva connects compassionate donors with patients in urgent need. Join a community dedicated to seamless, real-time medical support.
+         'রক্তসেবা' (RoktoSeva) সহানুভূতিশীল রক্তদাতাদের জরুরি প্রয়োজনে থাকা রোগীদের সাথে সংযুক্ত করে। নিরবচ্ছিন্ন ও তাৎক্ষণিক চিকিৎসা সহায়তা প্রদানে নিবেদিত এমন একটি কমিউনিটিতে আপনিও যোগ দিন।
         </motion.p>
 
        
